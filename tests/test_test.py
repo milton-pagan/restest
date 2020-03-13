@@ -1,12 +1,13 @@
 from util.restest_lexer import Lexer
 
+
 def test_tokens():
 
     lexer_wrapper = Lexer()
     lexer = lexer_wrapper.build()
 
-    test_input = 'test on and 3.56 a_duro-123'
-    
+    test_input = "(header hi [CT:JSON, ACC:JSON])"
+
     lexer.input(test_input)
 
     tokens = []
@@ -16,5 +17,5 @@ def test_tokens():
         if not token:
             break
         tokens.append(token)
-    
+
     return tokens
