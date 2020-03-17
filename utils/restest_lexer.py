@@ -48,7 +48,7 @@ class Lexer:
     # REGEX
     t_ignore = " \t"
 
-    t_OPERATOR = r"or|and|not|==|!="
+    t_OPERATOR = r"(or|and|not|==|!=)"
 
     t_SEPARATOR = r"\n|\\"
 
@@ -92,5 +92,5 @@ class Lexer:
         sys.exit(1)
 
     def build(self, **kwargs):
-        self.lexer = lex.lex(module=self, **kwargs)
-        return self.lexer
+        return lex.lex(module=self, **kwargs)
+        
