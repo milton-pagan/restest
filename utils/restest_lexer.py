@@ -51,7 +51,7 @@ class Lexer:
     # REGEX
     t_ignore = " \t"
 
-    t_OPERATOR = r"(==|!=|>|<|>=|<=)"
+    t_OPERATOR = r"(==|!=|>=|<=|>|<)"
 
     t_SEPARATOR = r"\n|\\"
 

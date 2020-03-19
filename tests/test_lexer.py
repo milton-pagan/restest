@@ -43,12 +43,12 @@ class TestLexer(unittest.TestCase):
     # Test operators
     def test_operators_lexer(self):
 
-        test_input = "or and == != not 32 dimelo 12345 x3"
+        test_input = "or and == != > < >= <= not 32 dimelo 12345 x3"
 
         tokens = [x for x in self.get_token_list(test_input) if x.type == "OPERATOR"]
 
-        # ==, !=
-        self.assertEqual(len(tokens), 2)
+        # ==, !=,<=, >, <, >=
+        self.assertEqual(len(tokens), 6)
 
     def test_separator_lexer(self):
 
