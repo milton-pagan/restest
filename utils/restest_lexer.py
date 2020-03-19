@@ -21,6 +21,9 @@ class Lexer:
         "post": "POST",
         "put": "PUT",
         "delete": "DELETE",
+        "and": "AND",
+        "or": "OR",
+        "not": "NOT",
     }
 
     # Tokens
@@ -48,7 +51,7 @@ class Lexer:
     # REGEX
     t_ignore = " \t"
 
-    t_OPERATOR = r"(or|and|not|==|!=)"
+    t_OPERATOR = r"(==|!=|>=|<=|>|<)"
 
     t_SEPARATOR = r"\n|\\"
 
@@ -66,7 +69,7 @@ class Lexer:
 
     t_COMMA = r","
 
-    t_STRING = r'"([^"\n]|[\\"])*"'
+    t_STRING = r'"([^"\n]|(\\"))*"'
 
     @TOKEN(identifier)
     def t_IDENTIFIER(self, t):
@@ -93,4 +96,3 @@ class Lexer:
 
     def build(self, **kwargs):
         return lex.lex(module=self, **kwargs)
-        

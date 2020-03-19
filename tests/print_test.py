@@ -6,7 +6,7 @@ def test_tokens():
     lexer_wrapper = Lexer()
     lexer = lexer_wrapper.build()
 
-    test_input = '(header hi [CT:JSON, ACC:JSON])  3.14.15 "Hola" "" " " x3 123 5432 dimelo "Testing 123" '
+    test_input = '(header hi [CT:JSON, ACC:JSON])  3.14.15 == !=   > <  '
 
     lexer.input(test_input)
 
