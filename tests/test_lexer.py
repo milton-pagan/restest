@@ -1,7 +1,7 @@
 import unittest
 import re
 from pprint import pprint
-from utils.restest_lexer import Lexer
+from util.lang_def.restest_lex import Lexer
 
 
 class TestLexer(unittest.TestCase):

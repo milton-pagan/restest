@@ -1,4 +1,4 @@
-from utils.restest_lexer import Lexer
+from util.lang_def.restest_lex import Lexer
 
 
 def test_tokens():
@@ -6,7 +6,7 @@ def test_tokens():
     lexer_wrapper = Lexer()
     lexer = lexer_wrapper.build()
 
-    test_input = '(header hi [CT:JSON, ACC:JSON])  3.14.15 == !=   > <  '
+    test_input = "header something[ACC:JSON, CP:IOJD, AOIS:SOKS]"
 
     lexer.input(test_input)
 

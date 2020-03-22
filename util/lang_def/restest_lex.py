@@ -1,15 +1,16 @@
 import ply.lex as lex
 from ply.lex import TOKEN
-import sys
 
 
 class Lexer:
+    # Keywords
 
     reserved = {
         "test": "TEST",
         "on": "ON",
         "for": "FOR",
         "before": "BEFORE",
+        "after": "AFTER",
         "url": "URL",
         "proc": "PROC",
         "header": "HEADER",
@@ -41,17 +42,21 @@ class Lexer:
         "COLON",
         "DOT",
         "COMMA",
+        "COMMENT",
+        "HEADER_PARAMETERS",
     ] + list(reserved.values())
 
     # Macros
 
     letter = r"[a-zA-Z]"
     identifier = letter + r"(\d|" + letter + r"|_|-)*"
+    header_params = r"([\w]+:[\w]+,?[\s]*)+"
 
     # REGEX
     t_ignore = " \t"
+    t_ignore_COMMENT = r"(\#\*[\s\S]*?\*\#)|(\#.*)"
 
-    t_OPERATOR = r"(==|!=|>=|<=|>|<)"
+    t_OPERATOR = r"(==|!=|>|<|>=|<=)"
 
     t_SEPARATOR = r"\n|\\"
 
@@ -70,6 +75,10 @@ class Lexer:
     t_COMMA = r","
 
     t_STRING = r'"([^"\n]|(\\"))*"'
+
+    @TOKEN(header_params)
+    def t_HEADER_PARAMETERS(self, t):
+        return t
 
     @TOKEN(identifier)
     def t_IDENTIFIER(self, t):
@@ -92,7 +101,7 @@ class Lexer:
     # Error handler
     def t_error(self, t):
         print("Error on line: %d \n Caused by: %s" % (t.lexer.lineno, t.value[0]))
-        sys.exit(1)
+        t.lexer.skip(1)
 
     def build(self, **kwargs):
         return lex.lex(module=self, **kwargs)
