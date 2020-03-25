@@ -16,7 +16,7 @@ class Lexer:
         "header": "HEADER",
         "if": "IF",
         "else": "ELSE",
-        "define": "DEFINE",
+        "def": "DEFINE",
         "verify": "VERIFY",
         "get": "GET",
         "post": "POST",
@@ -25,6 +25,19 @@ class Lexer:
         "and": "AND",
         "or": "OR",
         "not": "NOT",
+    }
+    
+    operators = {
+        r"\+": "PLUS",
+        "-": "MINUS",
+        r"\*": "MULT",
+        r"/": "DIV",
+        "==": "EQ",
+        r"\!=": "NEQ",
+        ">=": "GEQ",
+        "<=": "LEQ",
+        ">": "GT",
+        "<": "LT",
     }
 
     # Tokens
@@ -51,12 +64,11 @@ class Lexer:
     letter = r"[a-zA-Z]"
     identifier = letter + r"(\d|" + letter + r"|_|-)*"
     header_params = r"([\w]+:[\w]+,?[\s]*)+"
+    operator = r"(\+|-|\*|/|==|!=|>=|<=|>|<)"
 
     # REGEX
     t_ignore = " \t"
     t_ignore_COMMENT = r"(\#\*[\s\S]*?\*\#)|(\#.*)"
-
-    t_OPERATOR = r"(==|!=|>|<|>=|<=)"
 
     t_SEPARATOR = r"\n|\\"
 
@@ -91,6 +103,12 @@ class Lexer:
             t.value = float(t.value)
         else:
             t.value = int(t.value)
+        return t
+
+    @TOKEN(operators)
+    def t_OPERATOR(self, t):
+        t.type = self.operators[t.value]
+
         return t
 
     # To keep track of line numbers

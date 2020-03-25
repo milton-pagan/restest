@@ -6,7 +6,7 @@ def test_tokens():
     lexer_wrapper = Lexer()
     lexer = lexer_wrapper.build()
 
-    test_input = "header something[ACC:JSON, CP:IOJD, AOIS:SOKS]"
+    test_input = "+ - == >= <= * / > < !="
 
     lexer.input(test_input)
 
