@@ -28,12 +28,12 @@ class Lexer:
     }
     
     operators = {
-        r"\+": "PLUS",
+        "+": "PLUS",
         "-": "MINUS",
-        r"\*": "MULT",
-        r"/": "DIV",
+        "*": "MULT",
+        "/": "DIV",
         "==": "EQ",
-        r"\!=": "NEQ",
+        "!=": "NEQ",
         ">=": "GEQ",
         "<=": "LEQ",
         ">": "GT",
@@ -56,14 +56,12 @@ class Lexer:
         "DOT",
         "COMMA",
         "COMMENT",
-        "HEADER_PARAMETERS",
-    ] + list(reserved.values())
+    ] + list(reserved.values()) + list(operators.values())
 
     # Macros
 
     letter = r"[a-zA-Z]"
     identifier = letter + r"(\d|" + letter + r"|_|-)*"
-    header_params = r"([\w]+:[\w]+,?[\s]*)+"
     operator = r"(\+|-|\*|/|==|!=|>=|<=|>|<)"
 
     # REGEX
@@ -88,10 +86,6 @@ class Lexer:
 
     t_STRING = r'"([^"\n]|(\\"))*"'
 
-    @TOKEN(header_params)
-    def t_HEADER_PARAMETERS(self, t):
-        return t
-
     @TOKEN(identifier)
     def t_IDENTIFIER(self, t):
         t.type = self.reserved.get(t.value, "IDENTIFIER")
@@ -105,7 +99,7 @@ class Lexer:
             t.value = int(t.value)
         return t
 
-    @TOKEN(operators)
+    @TOKEN(operator)
     def t_OPERATOR(self, t):
         t.type = self.operators[t.value]
 
