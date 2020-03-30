@@ -20,16 +20,19 @@
 
     /* TEST */
 
-    {test} = BEFORE {procedure_call} LP TEST IDENTIFIER COLON SEPARATOR {expression} RP AFTER {procedure_call}
-    | BEFORE {procedure_call} LP TEST IDENTIFIER COLON SEPARATOR {expression} RP
-    | LP TEST IDENTIFIER COLON SEPARATOR {expression} RP AFTER {procedure_call}
-    | BEFORE {procedure_call} LP TEST ON STRING IDENTIFIER COLON SEPARATOR {expression} RP AFTER {procedure_call}
-    | BEFORE {procedure_call} LP TEST ON STRING IDENTIFIER COLON SEPARATOR {expression} RP
-    | LP TEST ON STRING IDENTIFIER COLON SEPARATOR {expression} RP AFTER {procedure_call}
+    {test} = {before} LP TEST IDENTIFIER COLON SEPARATOR {expression} RP {after}
+    | {before} LP TEST IDENTIFIER COLON SEPARATOR {expression} RP
+    | LP TEST IDENTIFIER COLON SEPARATOR {expression} RP {after}
+    | {before} LP TEST ON STRING IDENTIFIER COLON SEPARATOR {expression} RP {after}
+    | {before} LP TEST ON STRING IDENTIFIER COLON SEPARATOR {expression} RP
+    | LP TEST ON STRING IDENTIFIER COLON SEPARATOR {expression} RP {after}
+
+    {before} = BEFORE {procedure_call}
+    {after} = AFTER {procedure_call}
 
     /* PROCEDURE */
 
-    {procedure} = LP PROC LB {procedure_parameters} RB COLON SEPARATOR {expression} RP
+    {procedure} = LP PROC IDENTIFIER LB {procedure_parameters} RB COLON SEPARATOR {expression} RP
 
     {procedure_parameters} = IDENTIFIER
     | IDENTIFIER COMMA {procedure_parameters}
