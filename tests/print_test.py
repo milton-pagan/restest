@@ -6,7 +6,7 @@ def test_tokens():
     lexer_wrapper = Lexer()
     lexer = lexer_wrapper.build()
 
-    test_input = "(header [\"CT\":\"JSON\", \"SOMETHING\":\"BLAH\", \"SOMETHING\":\"BLAH\"])"
+    test_input = '"This is a string" something \r'
 
     lexer.input(test_input)
 

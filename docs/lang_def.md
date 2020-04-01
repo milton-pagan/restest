@@ -26,6 +26,8 @@
     | {before} LP TEST ON STRING IDENTIFIER COLON SEPARATOR {expression} RP {after}
     | {before} LP TEST ON STRING IDENTIFIER COLON SEPARATOR {expression} RP
     | LP TEST ON STRING IDENTIFIER COLON SEPARATOR {expression} RP {after}
+    | LP TEST IDENTIFIER COLON SEPARATOR {expression} RP
+    | LP TEST ON STRING IDENTIFIER COLON SEPARATOR {expression} RP
 
     {before} = BEFORE {procedure_call}
     {after} = AFTER {procedure_call}

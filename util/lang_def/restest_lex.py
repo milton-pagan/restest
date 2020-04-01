@@ -16,7 +16,7 @@ class Lexer:
         "header": "HEADER",
         "if": "IF",
         "else": "ELSE",
-        "def": "DEFINE",
+        "define": "DEFINE",
         "verify": "VERIFY",
         "get": "GET",
         "post": "POST",
@@ -26,7 +26,7 @@ class Lexer:
         "or": "OR",
         "not": "NOT",
     }
-    
+
     operators = {
         "+": "PLUS",
         "-": "MINUS",
@@ -42,21 +42,25 @@ class Lexer:
 
     # Tokens
 
-    tokens = [
-        "IDENTIFIER",
-        "OPERATOR",
-        "NUMBER",
-        "STRING",
-        "SEPARATOR",
-        "LP",
-        "RP",
-        "LB",
-        "RB",
-        "COLON",
-        "DOT",
-        "COMMA",
-        "COMMENT",
-    ] + list(reserved.values()) + list(operators.values())
+    tokens = (
+        [
+            "IDENTIFIER",
+            "OPERATOR",
+            "NUMBER",
+            "STRING",
+            "SEPARATOR",
+            "LP",
+            "RP",
+            "LB",
+            "RB",
+            "COLON",
+            "DOT",
+            "COMMA",
+            "COMMENT",
+        ]
+        + list(reserved.values())
+        + list(operators.values())
+    )
 
     # Macros
 
@@ -65,10 +69,8 @@ class Lexer:
     operator = r"(\+|-|\*|/|==|!=|>=|<=|>|<)"
 
     # REGEX
-    t_ignore = " \t"
+    t_ignore = " |\t|\r"
     t_ignore_COMMENT = r"(\#\*[\s\S]*?\*\#)|(\#.*)"
-
-    t_SEPARATOR = r"\n|\\"
 
     t_RP = r"\)"
 
@@ -117,4 +119,3 @@ class Lexer:
 
     def build(self, **kwargs):
         return lex.lex(module=self, **kwargs)
-        
