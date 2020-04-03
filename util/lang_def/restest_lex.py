@@ -1,15 +1,16 @@
 import ply.lex as lex
 from ply.lex import TOKEN
-import sys
 
 
 class Lexer:
+    # Keywords
 
     reserved = {
         "test": "TEST",
         "on": "ON",
         "for": "FOR",
         "before": "BEFORE",
+        "after": "AFTER",
         "url": "URL",
         "proc": "PROC",
         "header": "HEADER",
@@ -26,34 +27,50 @@ class Lexer:
         "not": "NOT",
     }
 
+    operators = {
+        "+": "PLUS",
+        "-": "MINUS",
+        "*": "MULT",
+        "/": "DIV",
+        "==": "EQ",
+        "!=": "NEQ",
+        ">=": "GEQ",
+        "<=": "LEQ",
+        ">": "GT",
+        "<": "LT",
+    }
+
     # Tokens
 
-    tokens = [
-        "IDENTIFIER",
-        "OPERATOR",
-        "NUMBER",
-        "STRING",
-        "SEPARATOR",
-        "LP",
-        "RP",
-        "LB",
-        "RB",
-        "COLON",
-        "DOT",
-        "COMMA",
-    ] + list(reserved.values())
+    tokens = (
+        [
+            "IDENTIFIER",
+            "OPERATOR",
+            "NUMBER",
+            "STRING",
+            "SEPARATOR",
+            "LP",
+            "RP",
+            "LB",
+            "RB",
+            "COLON",
+            "DOT",
+            "COMMA",
+            "COMMENT",
+        ]
+        + list(reserved.values())
+        + list(operators.values())
+    )
 
     # Macros
 
     letter = r"[a-zA-Z]"
     identifier = letter + r"(\d|" + letter + r"|_|-)*"
+    operator = r"(\+|-|\*|/|==|!=|>=|<=|>|<)"
 
     # REGEX
-    t_ignore = " \t"
-
-    t_OPERATOR = r"(==|!=|>=|<=|>|<)"
-
-    t_SEPARATOR = r"\n|\\"
+    t_ignore = " |\t|\r"
+    t_ignore_COMMENT = r"(\#\*[\s\S]*?\*\#)|(\#.*)"
 
     t_RP = r"\)"
 
@@ -84,6 +101,12 @@ class Lexer:
             t.value = int(t.value)
         return t
 
+    @TOKEN(operator)
+    def t_OPERATOR(self, t):
+        t.type = self.operators[t.value]
+
+        return t
+
     # To keep track of line numbers
     def t_newline(self, t):
         r"\n+"
@@ -92,7 +115,7 @@ class Lexer:
     # Error handler
     def t_error(self, t):
         print("Error on line: %d \n Caused by: %s" % (t.lexer.lineno, t.value[0]))
-        sys.exit(1)
+        t.lexer.skip(1)
 
     def build(self, **kwargs):
         return lex.lex(module=self, **kwargs)

@@ -1,7 +1,7 @@
 import unittest
 import re
 from pprint import pprint
-from utils.restest_lexer import Lexer
+from util.lang_def.restest_lex import Lexer
 
 
 class TestLexer(unittest.TestCase):
@@ -52,14 +52,14 @@ class TestLexer(unittest.TestCase):
 
     def test_separator_lexer(self):
 
-        test_input = r"""
-            define x3 76
+        test_input = """
+            define x3 76 \r
             x3 == \ \n
                 5
         """
         tokens = [x for x in self.get_token_list(test_input) if x.type == "SEPARATOR"]
         # \ \n
-        self.assertEqual(len(tokens), 2)
+        self.assertEqual(len(tokens), 3)
 
     def test_string_lexer(self):
 
