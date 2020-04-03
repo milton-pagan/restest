@@ -15,4 +15,4 @@ def simple_parse_test():
         ) after function("mundo")
     """
 
-    parser.parse(input_program)
+    return parser.parse(input_program)

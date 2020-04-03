@@ -8,4 +8,4 @@ if __name__ == "__main__":
     if "-tl" in sys.argv:
         pprint(test_tokens())
     if "-tp" in sys.argv:
-        simple_parse_test()
+        pprint(simple_parse_test())
