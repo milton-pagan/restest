@@ -1,7 +1,7 @@
 # RESTest Language Specification
 
 ```
-    {test_sequence} = {url} SEPARATOR {header} SEPARATOR {execution}
+      {test_sequence} = {url} SEPARATOR {header} SEPARATOR {execution}
     | {url} SEPARATOR {header} SEPARATOR {execution}{test_sequence}
     | {url} SEPARATOR {execution}
     | {url} SEPARATOR {execution}{test_sequence}
@@ -142,23 +142,5 @@
     | IDENTIFIER LT LT {object}
     | IDENTIFIER LT LT STRING
     | IDENTIFIER LT LT NUMBER
-
-```
-
-```
-(url "" )
-(header ["DIMELO":"DIMELO"])
-
-(Test on "/dimelo":
-define crazy_num 1
-verify eq crazy_num 1
-)
-
-Parse Tree = [{"url":""}, {"header":{"DIMELO":"DIMELO"}}, {"test": {
-"url-add":"/dimelo",
-"define": {"crazy_num":1},
-"verify": {"op":"eq",
-}
-}} ]
 
 ```
