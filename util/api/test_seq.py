@@ -1,5 +1,6 @@
 import requests
 from util.api.test import Test
+from util.api.procedure import Procedure
 
 
 class TestSequence(object):
@@ -10,6 +11,8 @@ class TestSequence(object):
 
     def register(self, instruction):
         if isinstance(instruction, Test):
+            pass
+        elif isinstance(instruction, Procedure):
             pass
 
     def get_proc(self, name="proc"):

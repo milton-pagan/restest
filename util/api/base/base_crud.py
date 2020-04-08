@@ -14,29 +14,29 @@ class BaseCrud(object):
         return new_url
 
     def get(self, body=None, **kwargs):
-        new_url = self._constructUrl(**kwargs)
+        new_url = self._construct_url(**kwargs)
         if body:
             return Response(requests.get(new_url, data=json.dumps(body), header=self.header))
         else:
-            return Response(requests.get(new_url, header=header))
+            return Response(requests.get(new_url, header=self.header))
 
     def put(self, body=None, **kwargs):
-        new_url = self._constructUrl(**kwargs)
+        new_url = self._construct_url(**kwargs)
         if body:
             return Response(requests.put(new_url, data=json.dumps(body), header=self.header))
         else:
-            return Response(requests.put(new_url, header=header))
+            return Response(requests.put(new_url, header=self.header))
 
     def post(self, body=None, **kwargs):
-        new_url = self._constructUrl(**kwargs)
+        new_url = self._construct_url(**kwargs)
         if body:
             return Response(requests.post(new_url, data=json.dumps(body), header=self.header))
         else:
-            return Response(requests.post(new_url, header=header))
+            return Response(requests.post(new_url, header=self.header))
 
     def delete(self, body=None, **kwargs):
-        new_url = self._constructUrl(**kwargs)
+        new_url = self._construct_url(**kwargs)
         if body:
             return Response(requests.delete(new_url, data=json.dumps(body), header=self.header))
         else:
-            return Response(requests.delete(new_url, header=header))
+            return Response(requests.delete(new_url, header=self.header))

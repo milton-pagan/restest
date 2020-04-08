@@ -10,9 +10,15 @@ def simple_parse_test():
         (header ["content-type":"application/json", "Accepts":"application/json"]) 
         
         before function("hola", "mundo") (test on "/car" test1:
-            define l1 "hole"
-            verify l1 == "hola"
+            define exp 3 + x * (5 / 7) + 8 * 40
         ) after function("mundo")
     """
 
     return parser.parse(input_program)
+
+
+
+"""
+if (t[2] is operator and +)
+    return self.eval(t[1]) + self.eval(t[3]) 
+"""

@@ -25,6 +25,7 @@ class Lexer:
         "and": "AND",
         "or": "OR",
         "not": "NOT",
+        "return": "RETURN",
     }
 
     operators = {

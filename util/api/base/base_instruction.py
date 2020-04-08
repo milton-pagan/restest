@@ -7,7 +7,7 @@ class BaseInstruction(object):
 
     def define(self, name, value):
         if type(value) == tuple:
-            self.variables = self.eval_math(value)
+            self.variables[name] = self.eval_math(value)
         else:
             self.variables[name] = value
 
@@ -15,4 +15,16 @@ class BaseInstruction(object):
         pass
 
     def eval_math(self, expression):
-        pass
+
+        if expression[0] == 'factor':
+            if type(expression[1]) == tuple:
+                if expression[1][0] == 'object':
+                    return self.variables.get(expression[1][0])
+                return self.eval_math(self, expression[1])
+            return expression[1][0]
+
+        if expression[0] == 'math_expression':
+            pass
+        
+                
+        return 0

@@ -81,7 +81,7 @@ class Parser(object):
         if len(p) == 9 and type(p[1]) == tuple:
             p[0] = ("test", ("id", p[4]), p[1], ("expression", p[6]), p[8])
         elif len(p) == 8 and type(p[1]) == tuple:
-            p[0] = ("test", ("id".p[4]), p[1], ("expression", p[6]))
+            p[0] = ("test", ("id", p[4]), p[1], ("expression", p[6]))
         elif len(p) == 8:
             p[0] = ("test", ("id", p[3]), ("expression", p[5]))
         elif len(p) == 11:
@@ -124,13 +124,14 @@ class Parser(object):
 
     def p_procedure(self, p):
         """
-        procedure : LP PROC IDENTIFIER LB procedure_parameters RB COLON expression RP
+        procedure : LP PROC IDENTIFIER LB procedure_parameters RB COLON expression return RP
         """
         p[0] = (
             "procedure",
             ("id", p[3]),
             ("procedure_parameters", p[5]),
             ("expression", p[8]),
+            p[9]
         )
 
     def p_procedure_parameters(self, p):
@@ -154,6 +155,18 @@ class Parser(object):
             p[0] = ("procedure_call", ("id", p[1]), ("parameters", p[3]))
         else:
             p[0] = ("procedure_call", ("id", p[1]))
+
+    def p_return(self, p):
+        """
+        return  :  RETURN IDENTIFIER
+                |  RETURN math_expression
+                |  RETURN crud
+                |  RETURN procedure_call
+                |  RETURN STRING
+                |  RETURN NUMBER
+                |  RETURN object
+        """
+        p[0] = ('return', p[2])
 
     def p_parameters(self, p):
         """
@@ -203,6 +216,7 @@ class Parser(object):
                     |   DEFINE IDENTIFIER IDENTIFIER
                     |   DEFINE IDENTIFIER procedure_call
                     |   DEFINE IDENTIFIER crud
+                    |   DEFINE IDENTIFIER math_expression
         """
 
         p[0] = ("definition", ("id", p[2]), p[3])
@@ -283,6 +297,7 @@ class Parser(object):
     def p_math_factor(self, p):
         """
         math_factor : NUMBER
+                    | object
                     | LP math_expression RP
         """
 

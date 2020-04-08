@@ -34,7 +34,7 @@
 
     /* PROCEDURE */
 
-    {procedure} = LP PROC IDENTIFIER LB {procedure_parameters} RB COLON SEPARATOR {expression} RP
+    {procedure} = LP PROC IDENTIFIER LB {procedure_parameters} RB COLON SEPARATOR {expression} {return} RP
 
     {procedure_parameters} = IDENTIFIER
     | IDENTIFIER COMMA {procedure_parameters}
@@ -46,6 +46,14 @@
     | NUMBER
     | STRING COMMA {parameters}
     | NUMBER COMMA {parameters}
+
+    {return} = RETURN IDENTIFIER
+    | RETURN {math_expression}
+    | RETURN {crud}
+    | RETURN {procedure_call}
+    | RETURN {object}
+    | RETURN NUMBER
+    | RETURN STRING
 
     /* EXPRESSION */
     {expression} = {line}
@@ -63,6 +71,7 @@
     | DEFINE IDENTIFIER IDENTIFIER
     | DEFINE IDENTIFIER {procedure_call}
     | DEFINE IDENTIFIER {crud}
+    | DEFINE IDENTIFIER {math_expression}
 
     {verify} = VERIFY {object} EQ {object}
     | VERIFY {math_expression} EQ {object}
