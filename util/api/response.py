@@ -15,3 +15,5 @@ class Response(object):
     def status(self):
         return self.response.status_code
 
+    def to_dict(self):
+        return {'status':self.status(), 'data':self.get_data()}

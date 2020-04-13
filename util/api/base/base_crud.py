@@ -2,10 +2,11 @@ import requests, json
 from util.api.response import Response
 
 class BaseCrud(object):
-    def __init__(self, base_url, header, **kwargs):
+    def __init__(self, base_url, header):
         super().__init__()
         self.url = base_url
         self.header = header
+        self.crud = {"get":self.get, "post":self.post, "put": self.put, "delete":self.delete}
 
     def _construct_url(self, **kwargs):
         new_url = self.url
@@ -40,3 +41,8 @@ class BaseCrud(object):
             return Response(requests.delete(new_url, data=json.dumps(body), header=self.header))
         else:
             return Response(requests.delete(new_url, header=self.header))
+
+
+    
+        
+    

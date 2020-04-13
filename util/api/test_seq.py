@@ -10,9 +10,7 @@ class TestSequence(object):
         self.initial_header = initial_header
 
     def register(self, instruction):
-        if isinstance(instruction, Test):
-            pass
-        elif isinstance(instruction, Procedure):
+        if isinstance(instruction, Procedure):
             pass
 
     def get_proc(self, name="proc"):

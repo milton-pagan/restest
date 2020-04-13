@@ -4,13 +4,18 @@ from util.lang_def.restest_yacc import Parser
 def simple_parse_test():
     parser = Parser().build_parser()
 
-    input_program = """
+    input_program = \
+    """
         (url "localhost:8080") 
         
         (header ["content-type":"application/json", "Accepts":"application/json"]) 
         
         before function("hola", "mundo") (test on "/car" test1:
             define exp 3 + x * (5 / 7) + 8 * 40
+            get("", id<<3, hola<<36)
+            post(id<<3, dimelo<<98)
+            put("")
+            verify something == something.something.something.something
         ) after function("mundo")
     """
 

@@ -414,9 +414,9 @@ class Parser(object):
                  | IDENTIFIER LT LT NUMBER
         """
         if type(p[1]) == tuple:
-            p[0] = (p[1],) + p[3]
+            p[0] = p[1] + p[3]
         else:
-            p[0] = ("assign", p[1], p[4])
+            p[0] = ((p[1], p[4]),)
 
     def p_error(self, p):
         print("Syntax error at token ", p, " line:", p.lexer.lineno)
