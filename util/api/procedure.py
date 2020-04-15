@@ -8,7 +8,7 @@ class Procedure(BaseInstruction):
         self.seq = []
         self.param_list = param_list
 
-    def register_action(self, value:tuple):
+    def register_action(self, value: tuple):
         if value[0] == "definition":
             if type(value[2]) == tuple:
                 if value[2][0] == "math_expression":
@@ -33,23 +33,29 @@ class Procedure(BaseInstruction):
             op1 = None
             op2 = None
 
-            if(type(value[2]) == tuple):
-                if(value[2][0] == "math_expression"):
+            if type(value[2]) == tuple:
+                if value[2][0] == "math_expression":
                     op1 = self.eval_math(value[2])
                 else:
-                    pass
+                    op1 = self.access_object(value[2])
             else:
                 op1 = value[2]
 
-            if(type(value[3] == tuple)):
-                pass
+            if type(value[3] == tuple):
+                if value[2][0] == "math_expression":
+                    op1 = self.eval_math(value[3])
+                else:
+                    op1 = self.access_object(value[3])
             else:
                 op2 = value[3]
 
             self.seq.append(lambda: self.verify(value[1][1], op1, op2))
 
-        else:
+        elif value[0] == "return":
             pass
+
+        else:
+            self.seq.append(self.eval_crud(value))
 
         """
             ('verify',
@@ -65,6 +71,7 @@ class Procedure(BaseInstruction):
                 ('id', 'something'),
                 ('ref', ('object', ('id', 'something')))))))))),
         """
+
     def run(self, *args):
         if len(args) != len(self.param_list):
             raise TypeError(f"Wrong number of arguments in {self.name} call")

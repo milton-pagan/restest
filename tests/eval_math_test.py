@@ -11,7 +11,7 @@ def eval_math_test():
             ("operator", "+"),
             (
                 "term",
-                ("factor", ("object", ("id", "x"))),
+                ("factor", 7),
                 ("operator", "*"),
                 ("factor", ("term", ("factor", 5), ("operator", "/"), ("factor", 7))),
             ),

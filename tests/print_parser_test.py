@@ -11,7 +11,7 @@ def simple_parse_test():
         (header ["content-type":"application/json", "Accepts":"application/json"]) 
         
         before function("hola", "mundo") (test on "/car" test1:
-            define exp 3 + x * (5 / 7) + 8 * 40
+            define exp 3 + 7 * (5 / 7) + 8 * 40
             get("", id<<3, hola<<36)
             post(id<<3, dimelo<<98)
             put("")

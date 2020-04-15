@@ -10,7 +10,7 @@ class Response(object):
         try:
             return self.response.json()
         except ValueError:
-            return self.response.text()
+            return self.response.content
 
     def status(self):
         return self.response.status_code
