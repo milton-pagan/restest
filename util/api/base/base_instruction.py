@@ -75,7 +75,7 @@ class BaseInstruction(BaseCrud):
         if expression[0] == "factor":
             if type(expression[1]) == tuple:
                 if expression[1][0] == "object":
-                    return self.access_object(e)  # Change to access object
+                    return self.access_object(e)  # TODO: Change to access object
                 return self.eval_math(expression[1])
             return expression[1]
 
