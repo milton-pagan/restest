@@ -13,9 +13,11 @@ class TestSequence(object):
         if isinstance(instruction, Procedure):
             pass
 
-    def get_proc(self, name="proc"):
+    def get_proc(self, name="proc", base_url=None):
         try:
-            return self.procedure_registry[name]
+            proc = self.procedure_registry[name]
+            proc.base_url = base_url
+            return proc
         except KeyError:
             raise KeyError(f"procedure {name} not defined")
 

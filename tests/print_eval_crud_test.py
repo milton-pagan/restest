@@ -11,7 +11,7 @@ def test1():
         name="Hola",
     )
 
-    pprint(inst.eval_crud(("get",))())
+    pprint(inst.eval_crud(("get",)))
     pprint(
         inst.eval_crud(
             (
@@ -21,5 +21,5 @@ def test1():
                     '{"product_name": "mineral water","product_description": "bottle","product_price": 0,"product_quantity": 100,"latitude": 50,"longitude": 100.5,"category": "water","category_attributes": {"water_exp_date": "2020-05-20","water_volume_ml": 500}}',
                 ),
             )
-        )()
+        )
     )

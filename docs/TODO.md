@@ -1,4 +1,3 @@
-# TODO 
-* Finish language definition:
-    * Verify
-* Fix operators
+# TODO
+
+- Add list to parser

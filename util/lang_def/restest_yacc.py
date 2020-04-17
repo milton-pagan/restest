@@ -249,6 +249,56 @@ class Parser(object):
                 | VERIFY object LEQ math_expression
                 | VERIFY object LEQ STRING
                 | VERIFY STRING LEQ object
+                | VERIFY STRING EQ STRING
+                | VERIFY STRING NEQ STRING
+                | VERIFY STRING LT STRING
+                | VERIFY STRING GT STRING
+                | VERIFY STRING GEQ STRING
+                | VERIFY STRING LEQ STRING
+                | VERIFY NUMBER EQ NUMBER
+                | VERIFY NUMBER NEQ NUMBER
+                | VERIFY NUMBER LT NUMBER
+                | VERIFY NUMBER GT NUMBER
+                | VERIFY NUMBER GEQ NUMBER
+                | VERIFY NUMBER LEQ NUMBER
+                | VERIFY NUMBER EQ object
+                | VERIFY NUMBER NEQ object
+                | VERIFY NUMBER LT object
+                | VERIFY NUMBER GT object
+                | VERIFY NUMBER GEQ object
+                | VERIFY NUMBER LEQ object
+                | VERIFY object EQ NUMBER
+                | VERIFY object NEQ NUMBER
+                | VERIFY object LT NUMBER
+                | VERIFY object GT NUMBER
+                | VERIFY object GEQ NUMBER
+                | VERIFY object LEQ NUMBER
+                | VERIFY NUMBER EQ math_expression
+                | VERIFY NUMBER NEQ math_expression
+                | VERIFY NUMBER LT math_expression
+                | VERIFY NUMBER GT math_expression
+                | VERIFY NUMBER GEQ math_expression
+                | VERIFY NUMBER LEQ math_expression
+                | VERIFY math_expression EQ NUMBER
+                | VERIFY math_expression NEQ NUMBER
+                | VERIFY math_expression LT NUMBER
+                | VERIFY math_expression GT NUMBER
+                | VERIFY math_expression GEQ NUMBER
+                | VERIFY math_expression LEQ NUMBER
+                | VERIFY NUMBER EQ STRING
+                | VERIFY NUMBER NEQ STRING
+                | VERIFY NUMBER LT STRING
+                | VERIFY NUMBER GT STRING
+                | VERIFY NUMBER GEQ STRING
+                | VERIFY NUMBER LEQ STRING
+                | VERIFY STRING EQ NUMBER
+                | VERIFY STRING NEQ NUMBER
+                | VERIFY STRING LT NUMBER
+                | VERIFY STRING GT NUMBER
+                | VERIFY STRING GEQ NUMBER
+                | VERIFY STRING LEQ NUMBER
+
+        
         """
 
         p[0] = ("verify", ("operator", p[3]), p[2], p[4])

@@ -10,7 +10,7 @@ class Test(BaseInstruction):
         self.url = self.url + str_concat
 
     def before(self, proc_name, *args):
-        self.variables["before_val"] = self.get_proc(proc_name).run(*args)
+        self.variables["before_val"] = self.get_proc(proc_name, self.base_url).run(*args)
 
     def after(self, proc_name, *args):
-        self.get_proc(proc_name).run(*args)
+        self.get_proc(proc_name, self.base_url).run(*args)
