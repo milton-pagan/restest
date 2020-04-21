@@ -1,7 +1,6 @@
 import ply.yacc as yacc
 from util.lang_def.restest_lex import Lexer
 
-
 class Parser(object):
 
     tokens = Lexer.tokens
@@ -131,7 +130,7 @@ class Parser(object):
             ("id", p[3]),
             ("procedure_parameters", p[5]),
             ("expression", p[8]),
-            p[9]
+            p[9],
         )
 
     def p_procedure_parameters(self, p):
@@ -163,17 +162,17 @@ class Parser(object):
                 |  RETURN crud
                 |  RETURN procedure_call
                 |  RETURN STRING
-                |  RETURN NUMBER
+                |  RETURN number
                 |  RETURN object
         """
-        p[0] = ('return', p[2])
+        p[0] = ("return", p[2])
 
     def p_parameters(self, p):
         """
         parameters  :   STRING
-                    |   NUMBER
+                    |   number
                     |   STRING COMMA parameters
-                    |   NUMBER COMMA parameters
+                    |   number COMMA parameters
         """
 
         if len(p) == 2:
@@ -212,7 +211,7 @@ class Parser(object):
     def p_definition(self, p):
         """
         definition  :   DEFINE IDENTIFIER STRING
-                    |   DEFINE IDENTIFIER NUMBER
+                    |   DEFINE IDENTIFIER number
                     |   DEFINE IDENTIFIER IDENTIFIER
                     |   DEFINE IDENTIFIER procedure_call
                     |   DEFINE IDENTIFIER crud
@@ -255,48 +254,48 @@ class Parser(object):
                 | VERIFY STRING GT STRING
                 | VERIFY STRING GEQ STRING
                 | VERIFY STRING LEQ STRING
-                | VERIFY NUMBER EQ NUMBER
-                | VERIFY NUMBER NEQ NUMBER
-                | VERIFY NUMBER LT NUMBER
-                | VERIFY NUMBER GT NUMBER
-                | VERIFY NUMBER GEQ NUMBER
-                | VERIFY NUMBER LEQ NUMBER
-                | VERIFY NUMBER EQ object
-                | VERIFY NUMBER NEQ object
-                | VERIFY NUMBER LT object
-                | VERIFY NUMBER GT object
-                | VERIFY NUMBER GEQ object
-                | VERIFY NUMBER LEQ object
-                | VERIFY object EQ NUMBER
-                | VERIFY object NEQ NUMBER
-                | VERIFY object LT NUMBER
-                | VERIFY object GT NUMBER
-                | VERIFY object GEQ NUMBER
-                | VERIFY object LEQ NUMBER
-                | VERIFY NUMBER EQ math_expression
-                | VERIFY NUMBER NEQ math_expression
-                | VERIFY NUMBER LT math_expression
-                | VERIFY NUMBER GT math_expression
-                | VERIFY NUMBER GEQ math_expression
-                | VERIFY NUMBER LEQ math_expression
-                | VERIFY math_expression EQ NUMBER
-                | VERIFY math_expression NEQ NUMBER
-                | VERIFY math_expression LT NUMBER
-                | VERIFY math_expression GT NUMBER
-                | VERIFY math_expression GEQ NUMBER
-                | VERIFY math_expression LEQ NUMBER
-                | VERIFY NUMBER EQ STRING
-                | VERIFY NUMBER NEQ STRING
-                | VERIFY NUMBER LT STRING
-                | VERIFY NUMBER GT STRING
-                | VERIFY NUMBER GEQ STRING
-                | VERIFY NUMBER LEQ STRING
-                | VERIFY STRING EQ NUMBER
-                | VERIFY STRING NEQ NUMBER
-                | VERIFY STRING LT NUMBER
-                | VERIFY STRING GT NUMBER
-                | VERIFY STRING GEQ NUMBER
-                | VERIFY STRING LEQ NUMBER
+                | VERIFY number EQ number
+                | VERIFY number NEQ number
+                | VERIFY number LT number
+                | VERIFY number GT number
+                | VERIFY number GEQ number
+                | VERIFY number LEQ number
+                | VERIFY number EQ object
+                | VERIFY number NEQ object
+                | VERIFY number LT object
+                | VERIFY number GT object
+                | VERIFY number GEQ object
+                | VERIFY number LEQ object
+                | VERIFY object EQ number
+                | VERIFY object NEQ number
+                | VERIFY object LT number
+                | VERIFY object GT number
+                | VERIFY object GEQ number
+                | VERIFY object LEQ number
+                | VERIFY number EQ math_expression
+                | VERIFY number NEQ math_expression
+                | VERIFY number LT math_expression
+                | VERIFY number GT math_expression
+                | VERIFY number GEQ math_expression
+                | VERIFY number LEQ math_expression
+                | VERIFY math_expression EQ number
+                | VERIFY math_expression NEQ number
+                | VERIFY math_expression LT number
+                | VERIFY math_expression GT number
+                | VERIFY math_expression GEQ number
+                | VERIFY math_expression LEQ number
+                | VERIFY number EQ STRING
+                | VERIFY number NEQ STRING
+                | VERIFY number LT STRING
+                | VERIFY number GT STRING
+                | VERIFY number GEQ STRING
+                | VERIFY number LEQ STRING
+                | VERIFY STRING EQ number
+                | VERIFY STRING NEQ number
+                | VERIFY STRING LT number
+                | VERIFY STRING GT number
+                | VERIFY STRING GEQ number
+                | VERIFY STRING LEQ number
 
         
         """
@@ -305,12 +304,22 @@ class Parser(object):
 
     def p_object(self, p):
         """
-        object : IDENTIFIER
-               | IDENTIFIER DOT object
+        object : IDENTIFIER DOT object
+               | IDENTIFIER DOT INTEGER DOT object 
+               | IDENTIFIER DOT INTEGER
+               | IDENTIFIER 
         """
 
         if len(p) == 2:
             p[0] = ("object", ("id", p[1]))
+        elif len(p) == 6:
+            p[0] = (
+                "object",
+                ("id", p[1]),
+                ("ref", ("object", ("id", p[3]), ("ref", p[5]))),
+            )
+        elif type(p[3]) == int:
+            p[0] = ("object", ("id", p[1]), ("ref", ("object", ("id", p[3]))))
         else:
             p[0] = ("object", ("id", p[1]), ("ref", p[3]))
 
@@ -346,7 +355,7 @@ class Parser(object):
     # ('factor')
     def p_math_factor(self, p):
         """
-        math_factor : NUMBER
+        math_factor : number
                     | object
                     | LP math_expression RP
         """
@@ -355,6 +364,14 @@ class Parser(object):
             p[0] = ("factor", p[1])
         else:
             p[0] = ("factor", p[2])
+
+    def p_number(self, p):
+        """
+        number : INTEGER
+               | FLOAT
+        """
+
+        p[0] = p[1]
 
     def p_crud(self, p):
         """
@@ -461,7 +478,7 @@ class Parser(object):
         crudargs : crudargs COMMA crudargs
                  | IDENTIFIER LT LT object
                  | IDENTIFIER LT LT STRING
-                 | IDENTIFIER LT LT NUMBER
+                 | IDENTIFIER LT LT number
         """
         if type(p[1]) == tuple:
             p[0] = p[1] + p[3]

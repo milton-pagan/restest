@@ -9,9 +9,8 @@ class TestSequence(object):
         self.base_url = base_url
         self.initial_header = initial_header
 
-    def register(self, instruction):
-        if isinstance(instruction, Procedure):
-            pass
+    def register_proc(self, procedure):
+        self.procedure_registry[procedure.name]
 
     def get_proc(self, name="proc", base_url=None):
         try:
@@ -21,31 +20,3 @@ class TestSequence(object):
         except KeyError:
             raise KeyError(f"procedure {name} not defined")
 
-
-"""
-
-    temp = Test(...)
-            .on(...)
-            .define(....)
-            .verify()
-            .build()
-
-    urls = {}
-
-    test_sequence = TestSequence()
-
-    for i in tests:
-        if i[0] == procedure:
-            temp = Procedure()
-            test_sequence.register(temp)
-
-    test1 = Test()
-
-    test1.define(....)
-
-    test1.verify(....)
-
-    test_sequence.register(test1)
-    test_sequence.run()
-
-"""

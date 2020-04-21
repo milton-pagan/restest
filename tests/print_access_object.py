@@ -1,14 +1,15 @@
 import sys
 from util.api.base.base_instruction import BaseInstruction
-from tests.print_eval_crud_test import test1
 
 
 def access_object():
     variables = {
-            "something0": {
-                    "something1": {"something2": {"something3": "Holaaaa Mundooo"}}
-                }
+        "something0": {
+            "something1": {
+                "something2": {"something3": ["Holaaaa Mundooo", "dimelooo"]}
             }
+        }
+    }
 
     base_instr = BaseInstruction("name", None, "url", "header")
     base_instr.variables = variables
@@ -29,7 +30,14 @@ def access_object():
                             (
                                 "object",
                                 ("id", "something2"),
-                                ("ref", ("object", ("", "something3"))),
+                                (
+                                    "ref",
+                                    (
+                                        "object",
+                                        ("id", "something3"),
+                                        ("ref", ("object", ("id", 0))),
+                                    ),
+                                ),
                             ),
                         ),
                     ),
@@ -37,4 +45,3 @@ def access_object():
             )
         )
     )
-

@@ -20,36 +20,91 @@ class BaseInstruction(BaseCrud):
             if op1[0] == "object" and op2[0] == "object":
                 comp_op1 = self.access_object(op1)
                 comp_op2 = self.access_object(op2)
-                try:
-                    if type(comp_op1) == type(comp_op2) == 5:
-                        pass
 
+                try:
+                    first = float(comp_op1)
+                    second = float(comp_op2)
                 except TypeError:
                     raise TypeError("Invalid types")
 
-            if op1[0] == "math_expression" and op2[0] == "object":
+                return self.v_calc(first, operation, second)
+
+            elif op1[0] == "math_expression" and op2[0] == "object":
                 comp_op1 = self.eval_math(op1)
                 comp_op2 = self.access_object(op2)
-                return self.v_calc(comp_op1, operation, comp_op2)
 
-            if op1[0] == "object" and op2[0] == "math_expression":
+                try:
+                    second = float(comp_op2)
+                except TypeError:
+                    raise TypeError("Invalid types")
+
+                return self.v_calc(comp_op1, operation, second)
+
+            elif op1[0] == "object" and op2[0] == "math_expression":
                 comp_op1 = self.access_object(op1)
                 comp_op2 = self.eval_math(op2)
-                return self.v_calc(comp_op1, operation, comp_op2)
+
+                try:
+                    first = float(comp_op1)
+                except TypeError:
+                    raise TypeError("Invalid types")
+
+                return self.v_calc(first, operation, comp_op2)
+
+            comp_op1 = self.eval_math(op1)
+            comp_op2 = self.eval_math(op2)
+            return self.v_calc(comp_op1, operation, comp_op2)
 
         if type(op1) == tuple:
             if op1[0] == "object":
-                return self.v_calc(self.access_object(op1), operation, op2)
+                comp_op1 = self.access_object(op1)
+
+                try:
+                    first = float(comp_op1)
+                    second = float(op2)
+                except TypeError:
+                    raise TypeError("Invalid types")
+
+                return self.v_calc(first, operation, second)
+                
             if op1[0] == "math_expression":
-                return self.v_calc(self.eval_math(op1), operation, op2)
+                comp_op1 = self.eval_math(op1)
+
+                try:
+                    second = float(op2)
+                except TypeError:
+                    raise TypeError("Invalid types")
+                
+                return self.v_calc(comp_op1, operation, second)
 
         if type(op2) == tuple:
             if op2[0] == "object":
-                return self.v_calc(op1, operation, self.access_object(op2))
-            if op2[0] == "math_expression":
-                return self.v_calc(op1, operation, self.eval_math(op2))
+                comp_op2 = self.access_object(op2)
 
-        return self.v_calc(op1, operation, op2)
+                try:
+                    first = float(op1)
+                    second = float(comp_op2)
+                except TypeError:
+                    raise TypeError("Invalid types")
+                
+                return self.v_calc(first, operation, second)
+                
+            if op2[0] == "math_expression":
+                comp_op2 = self.eval_math(op2)
+                try:
+                    first = float(op1)
+                except TypeError:
+                    raise TypeError("Invalid types")
+
+                return self.v_calc(first, operation, comp_op2)
+
+        try:
+            first = float(op1)
+            second = float(op2)
+        except TypeError:
+            raise TypeError("Invalid types")
+
+        return self.v_calc(first, operation, second)
 
     def v_calc(self, op1, operator, op2):
         if operator == "==":
@@ -75,11 +130,11 @@ class BaseInstruction(BaseCrud):
         if expression[0] == "factor":
             if type(expression[1]) == tuple:
                 if expression[1][0] == "object":
-                    return self.access_object(e)  # TODO: Change to access object
+                    return self.access_object(expression[1])
                 return self.eval_math(expression[1])
             return expression[1]
 
-        return self.calc(
+        return self._calc(
             self.eval_math(expression[1]),
             expression[2][1],
             self.eval_math(expression[3]),

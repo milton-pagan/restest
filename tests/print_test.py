@@ -6,7 +6,7 @@ def test_tokens():
     lexer_wrapper = Lexer()
     lexer = lexer_wrapper.build()
 
-    test_input = '"This is a string" something \r'
+    test_input = 'something.2.something.something.3'
 
     lexer.input(test_input)
 

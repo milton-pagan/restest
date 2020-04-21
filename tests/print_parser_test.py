@@ -15,7 +15,7 @@ def simple_parse_test():
             get("", id<<3, hola<<36)
             post(id<<3, dimelo<<98)
             put("")
-            verify something == something.something.something.something
+            verify something == something.2.something.something.3
         ) after function("mundo")
     """
 
