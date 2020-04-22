@@ -10,7 +10,65 @@ class Test(BaseInstruction):
         self.url = self.url + str_concat
 
     def before(self, proc_name, *args):
-        self.variables["before_val"] = self.get_proc(proc_name, self.base_url).run(*args)
+        self.variables["before_val"] = self.get_proc(proc_name, self.base_url).run(
+            *args
+        )
 
     def after(self, proc_name, *args):
         self.get_proc(proc_name, self.base_url).run(*args)
+
+    def execute(self, action):
+
+        if action[0] == "id":
+            self.name == action[1]
+
+        elif action[0] == "before":
+            if len(action[1]) == 2:
+                self.before(action[1][1][1])
+            elif len(action[1]) == 3:
+                self.before(action[1][1][1], *action[1][2][1])
+
+        elif action[0] == "after":
+            if len(action[1]) == 2:
+                self.after(action[1][1][1])
+            elif len(action[1]) == 3:
+                self.before(action[1][1][1], *action[1][2][1])
+
+        elif action[0] == "on":
+            self.on(action[1].strip('"'))
+
+        elif action[0] == "expression":
+            self._execute_expression(action[1])
+
+    def _execute_expression(self, expression):
+        for line in expression:
+            if line[0] == "instruction":
+                self._execute_instruction(line[1])
+            elif line[0] == "definition":
+                self._execute_definition(line[1][1], line[2])
+
+    def _execute_instruction(self, instruction):
+        if instruction[0] == "verify":
+            self.verify(instruction[1][1], instruction[2], instruction[3])
+        elif instruction[0] == "procedure_call":
+            self.get_proc(instruction[2][1][1], self.base_url).run(*instruction[2][1])
+        else:  # CRUD
+            self.eval_crud(instruction)
+
+    def _execute_definition(self, name, value):
+        if type(value) == tuple:
+            if value[0] == "math_expression":
+                self.define(name, self.eval_math(value))
+            elif value[0] == "procedure_call":
+                self.define(
+                    name, self.get_proc(value[1][1], self.base_url).run(*value[2][1])
+                )
+            elif value[0] == "object":
+                self.define(name, self.access_object(value))
+            else:  # CRUD
+                self.define(name, self.eval_crud(value))
+        else:
+            if type(value) == str:
+                self.define(name, value.strip('"'))
+            else:
+                self.define(name, value)

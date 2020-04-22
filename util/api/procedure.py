@@ -20,7 +20,7 @@ class Procedure(BaseInstruction):
                         lambda: self.define(
                             value[1][1],
                             self.get_proc(value[2][1][1], self.base_url).run(
-                                value[2][1]
+                                *value[2][1]
                             ),
                         )
                     )

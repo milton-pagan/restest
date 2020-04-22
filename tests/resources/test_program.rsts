@@ -1,0 +1,8 @@
+
+(url "http://www.miltonpagan.com")
+(header ["Content-Type":"application/json", "Accepts":"*/*"])
+
+(test on "/disasterStorage/products" test1:
+    define product get()
+    post("{'product_name': 'mineral water','product_description': 'bottle','product_price': 0,'product_quantity': 100,'latitude': 50,'longitude': 100.5,'category': 'water', 'category_attributes': {'water_exp_date': '2020-05-20', 'water_volume_ml': 500}}")
+)

@@ -1,14 +1,21 @@
 from util.api.base.base_instruction import BaseInstruction
 
+
 def verify_test():
 
     bi = BaseInstruction("somthing", None, "hello", "hey")
-    bi.variables =  {
-                    "x": 5,
-                    "y":"2.0",
-                    "z": "5"
-                    }
-    op1 =   ("object",("id", "y"))  
-    op2 = ("object",("id","z"))
+    bi.variables = {"x": 30, "y": "2.0", "z": "5"}
+    op1 = ("object", ("id", "z"))
+    op2 = (
+        "math_expression",
+        ("factor", 5.2),
+        ("operator", "+"),
+        (
+            "term",
+            ("factor", 5),
+            ("operator", "*"),
+            ("factor", ("term", ("factor", 10), ("operator", "/"), ("factor", 2))),
+        ),
+    )
 
-    return BaseInstruction("somthing", None, "hello", "hey").verify("==", op1, op2)
+    return bi.verify(">=", op1, op2)

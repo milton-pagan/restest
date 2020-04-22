@@ -20,4 +20,3 @@ def eval_math_test():
         ("term", ("factor", 8), ("operator", "*"), ("factor", 40)),
     )
     return BaseInstruction("somthing", None, "hello", "hey").eval_math(input)
-

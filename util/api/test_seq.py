@@ -19,4 +19,3 @@ class TestSequence(object):
             return proc
         except KeyError:
             raise KeyError(f"procedure {name} not defined")
-

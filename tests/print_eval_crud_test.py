@@ -6,7 +6,7 @@ def test1():
 
     inst = BaseInstruction(
         base_url="http://localhost:5000/disasterStorage/products",
-        header={"Content-Type":"application/json", "Accept": "*/*"},
+        header={"Content-Type": "application/json", "Accept": "*/*"},
         get_proc=None,
         name="Hola",
     )

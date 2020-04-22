@@ -66,7 +66,7 @@ class BaseInstruction(BaseCrud):
                     raise TypeError("Invalid types")
 
                 return self.v_calc(first, operation, second)
-                
+
             if op1[0] == "math_expression":
                 comp_op1 = self.eval_math(op1)
 
@@ -74,7 +74,7 @@ class BaseInstruction(BaseCrud):
                     second = float(op2)
                 except TypeError:
                     raise TypeError("Invalid types")
-                
+
                 return self.v_calc(comp_op1, operation, second)
 
         if type(op2) == tuple:
@@ -86,9 +86,9 @@ class BaseInstruction(BaseCrud):
                     second = float(comp_op2)
                 except TypeError:
                     raise TypeError("Invalid types")
-                
+
                 return self.v_calc(first, operation, second)
-                
+
             if op2[0] == "math_expression":
                 comp_op2 = self.eval_math(op2)
                 try:

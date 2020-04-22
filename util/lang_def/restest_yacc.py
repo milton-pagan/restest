@@ -1,6 +1,7 @@
 import ply.yacc as yacc
 from util.lang_def.restest_lex import Lexer
 
+
 class Parser(object):
 
     tokens = Lexer.tokens
@@ -59,10 +60,11 @@ class Parser(object):
         """
 
         if len(p) == 2:
-            p[0] = tuple(p[1])
+            p[0] = (p[1],)
         else:
-            p[0] = p[1] + p[3]
+            p[0] = (p[1],) + p[2]
 
+    # ('execution', (('test'),() ))
     ### TEST ###
 
     # ('test', ('id', name), ('before', ...), ('on', '...'), ('body', ...), ('after', ...))
@@ -212,7 +214,7 @@ class Parser(object):
         """
         definition  :   DEFINE IDENTIFIER STRING
                     |   DEFINE IDENTIFIER number
-                    |   DEFINE IDENTIFIER IDENTIFIER
+                    |   DEFINE IDENTIFIER object
                     |   DEFINE IDENTIFIER procedure_call
                     |   DEFINE IDENTIFIER crud
                     |   DEFINE IDENTIFIER math_expression

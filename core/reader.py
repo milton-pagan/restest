@@ -20,28 +20,45 @@ class Reader(object):
         for child in tree:
             if type(child) == tuple:
                 if child[0] == "url":
-                    self.test_seq.base_url = child[1]
+                    self.test_seq.base_url = child[1].strip('"')
                 elif child[0] == "header":
-                    self.test_seq.initial_header = self.parse_header(self.parse_header(child[1]))
+                    self.test_seq.initial_header = self.parse_header(child[1])
                 elif child[0] == "execution":
-                    self._helper_run(self, child, tree)
-                elif child[0] == "procedure": # Milton
-                    procedure = Procedure(name=child[1][1], get_proc=self.test_seq.get_proc, base_url=self.test_seq.base_url, header=self.test_seq.initial_header, param_list=list(child[2][1]))
+                    self._execution_run(child[1])
 
-                elif child[0] == "test":
-                    test = Test(name=child[1][1], base_url=self.test_seq.base_url, get_proc=self.test_seq.get_proc)
-                    
-                    for grandchild in child:
-                        if grandchild[0] == "before":
-                            test.before(
-                                None
-                            )
+    def _execution_run(self, execution_itr):
 
+        for child in execution_itr:
+
+            if child[0] == "procedure":
+                procedure = Procedure(
+                    name=child[1][1],
+                    get_proc=self.test_seq.get_proc,
+                    base_url=self.test_seq.base_url,
+                    header=self.test_seq.initial_header,
+                    param_list=list(child[2][1]),
+                )
+
+                for action in child[3][1]:
+                    procedure.register_action(action)
+                procedure.register_action(child[4])
+
+                self.test_seq.register_proc(procedure)
+
+            elif child[0] == "test":
+                test = Test(
+                    name=None,
+                    base_url=self.test_seq.base_url,
+                    get_proc=self.test_seq.get_proc,
+                    header=self.test_seq.initial_header
+                )
+                for action in child[1:]:
+                    test.execute(action)
 
     def read_file(self, path):
         if not path.endswith(".rsts"):
             try:
-                raise FileTypeError(f"Invalid file type: {os.path.splitext(path)[1]}")
+                raise FileTypeError(f"Invalid file type: {os.path.splitext(path)}")
                 exit(-1)
             except IndexError:
                 raise FileTypeError(f"Invalid file type: No file type")
