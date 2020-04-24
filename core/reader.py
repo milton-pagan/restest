@@ -70,6 +70,6 @@ class Reader(object):
         header = {}
 
         for param in header_params:
-            header[param[0]] = param[1]
+            header[param[0].strip('"')] = param[1].strip('"')
 
         return header

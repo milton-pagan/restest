@@ -162,24 +162,19 @@ class BaseInstruction(BaseCrud):
             return temp[value[1][1]]
 
     def eval_crud(self, value: tuple):
+        
         if len(value) == 0:
             raise ValueError("Value cannot be empty")
 
         if len(value) == 1:
             return self.crud[value[0]](body=None).to_dict()
 
-        if len(value) == 3 and type(value[1][1]) == str:
+        if len(value) == 3:
             param_dict = {x[0]: x[1] for x in value[2][1]}
-            return self.crud[value[0]](body=value[1][1], **param_dict).to_dict()
-
-        elif len(value) == 3 and type(value[1][1]) == tuple:
-            param_dict = {x[0]: x[1] for x in value[2][1]}
-            return self.crud[value[0]](
-                body=self.access_object(value[1][1]), **param_dict
-            ).to_dict()
+            return self.crud[value[0]](body=self._helper_crud_body(value[1]), **param_dict).to_dict()
 
         elif len(value) == 2 and value[1][0] == "crudbody":
-            return self.crud[value[0]](body=value[1][1]).to_dict()
+            return self.crud[value[0]](body=self._helper_crud_body(value[1])).to_dict()
 
         elif len(value) == 2 and value[1][0] == "crudargs":
             param_dict = {x[0]: x[1] for x in value[1][1]}
@@ -187,3 +182,28 @@ class BaseInstruction(BaseCrud):
 
         else:
             return self.crud[value[0]](body=self.access_object(value[1][1])).to_dict()
+
+    def _helper_crud_body(self, value):
+        if type(value[1]) == tuple:
+            if value[1][0] == "object":
+                return self.access_object(value[1])
+            elif value[1][0] == "dictionary":
+                return self.parse_dictionary(value[1])
+        elif type(value[1]) == str:
+            return value[1]
+
+    # ("dictionary", ( ("key1", "value1"), ("key2", ("dictionary", ( ("key1", "value1") ) ) ) ))
+    def parse_dictionary(self, dictionary_tuple):
+        dictionary = {}
+
+        for pair in dictionary_tuple[1]:
+            if type(pair[1]) == tuple:
+                value = self.parse_dictionary(pair[1])
+            elif type(pair[1]) == str:
+                value = pair[1].strip('"')
+            else:
+                value = pair[1]
+
+            dictionary[pair[0].strip('"')] = value
+
+        return dictionary

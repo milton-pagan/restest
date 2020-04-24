@@ -55,6 +55,8 @@ class Lexer:
             "RP",
             "LB",
             "RB",
+            "LC",
+            "RC",
             "COLON",
             "DOT",
             "COMMA",
@@ -81,6 +83,10 @@ class Lexer:
     t_LB = r"\["
 
     t_RB = r"\]"
+
+    t_LC = r"{"
+
+    t_RC = r"}"
 
     t_COLON = r":"
 

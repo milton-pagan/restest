@@ -8,7 +8,7 @@ if __name__ == "__main__":
     #     print("Invalid arguments!")
     #     exit(-1)
 
-    path = "/home/milpa/college/courses/prog_lang/restest/tests/resources/test_program.rsts"
+    path = "tests/resources/test_program.rsts"
 
     reader.read_file(path)
     reader.run()

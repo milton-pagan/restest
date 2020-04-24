@@ -42,6 +42,9 @@ class Test(BaseInstruction):
 
     def _execute_expression(self, expression):
         for line in expression:
+            if type(line[0]) == tuple:
+                line = line[0]
+
             if line[0] == "instruction":
                 self._execute_instruction(line[1])
             elif line[0] == "definition":
@@ -65,6 +68,9 @@ class Test(BaseInstruction):
                 )
             elif value[0] == "object":
                 self.define(name, self.access_object(value))
+
+            elif value[0] == "dictionary":
+                self.define(name, self.parse_dictionary(value))
             else:  # CRUD
                 self.define(name, self.eval_crud(value))
         else:

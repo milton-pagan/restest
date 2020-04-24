@@ -192,7 +192,7 @@ class Parser(object):
         if len(p) == 2:
             p[0] = (p[1],)
         else:
-            p[0] = (p[1], p[2])
+            p[0] = (p[1],) + p[2]
 
     def p_line(self, p):
         """
@@ -218,6 +218,7 @@ class Parser(object):
                     |   DEFINE IDENTIFIER procedure_call
                     |   DEFINE IDENTIFIER crud
                     |   DEFINE IDENTIFIER math_expression
+                    |   DEFINE IDENTIFIER dictionary
         """
 
         p[0] = ("definition", ("id", p[2]), p[3])
@@ -449,10 +450,10 @@ class Parser(object):
     # ('delete') | ('delete', ('crudbody', ...) ) | ('delete', ('crudbody', ...), (crudargs, ...)) | ('delete', ('crudargs', ...) )
     def p_delete(self, p):
         """
-        delete : DELETE LP RP
-            | DELETE LP crudbody RP
-            | DELETE LP crudbody COMMA crudargs RP
-            | DELETE LP crudargs RP
+        delete :  DELETE LP RP
+                | DELETE LP crudbody RP
+                | DELETE LP crudbody COMMA crudargs RP
+                | DELETE LP crudargs RP
         """
         if len(p) == 4:
             p[0] = (p[1],)
@@ -486,6 +487,33 @@ class Parser(object):
             p[0] = p[1] + p[3]
         else:
             p[0] = ((p[1], p[4]),)
+
+    
+    def p_dictionary(self, p):
+        """
+        dictionary : LC dictionary_object RC
+        """
+
+        p[0] = ("dictionary", p[2])
+
+    def p_dictionary_object(self, p):
+        """
+        dictionary_object : STRING COLON dictionary_type
+                          | STRING COLON dictionary_type COMMA dictionary_object
+        """
+        
+        if len(p) == 4:
+            p[0] = ((p[1], p[3]),)
+        else:
+            p[0] = ((p[1], p[3]),) + p[5]
+
+    def p_dictionary_type(self, p):
+        """ 
+        dictionary_type : STRING
+                        | number      
+                        | dictionary
+        """   
+        p[0] = p[1]
 
     def p_error(self, p):
         print("Syntax error at token ", p, " line:", p.lexer.lineno)

@@ -4,5 +4,17 @@
 
 (test on "/disasterStorage/products" test1:
     define product get()
-    post("{'product_name': 'mineral water','product_description': 'bottle','product_price': 0,'product_quantity': 100,'latitude': 50,'longitude': 100.5,'category': 'water', 'category_attributes': {'water_exp_date': '2020-05-20', 'water_volume_ml': 500}}")
+    define payload {"product_name": "water jug",
+        "product_description": "jug",
+        "product_price": 1.0,
+        "product_quantity": 100,
+        "latitude": 50,
+        "longitude": 100.5,
+        "category": "water", 
+        "category_attributes": {
+                                "water_exp_date": "2020-05-20", 
+                                "water_volume_ml": 1500
+                                }
+        }
+    post(payload)
 )

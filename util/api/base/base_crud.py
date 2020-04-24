@@ -24,7 +24,7 @@ class BaseCrud(object):
         new_url = self._construct_url(**kwargs)
         if body:
             return Response(
-                requests.get(new_url, json=json.loads(body), headers=self.header)
+                requests.get(new_url, json=body, headers=self.header)
             )
         else:
             return Response(requests.get(new_url, headers=self.header))
@@ -33,7 +33,7 @@ class BaseCrud(object):
         new_url = self._construct_url(**kwargs)
         if body:
             return Response(
-                requests.put(new_url, json=json.loads(body), headers=self.header)
+                requests.put(new_url, json=body, headers=self.header)
             )
         else:
             return Response(requests.put(new_url, headers=self.header))
@@ -42,9 +42,8 @@ class BaseCrud(object):
         new_url = self._construct_url(**kwargs)
 
         if body:
-            data = json.loads(body)
             return Response(
-                requests.post(new_url, json=json.loads(body), headers=self.header)
+                requests.post(new_url, json=body, headers=self.header)
             )
         else:
             return Response(requests.post(new_url, headers=self.header))
@@ -53,7 +52,7 @@ class BaseCrud(object):
         new_url = self._construct_url(**kwargs)
         if body:
             return Response(
-                requests.delete(new_url, json=json.loads(body), headers=self.header)
+                requests.delete(new_url, json=body, headers=self.header)
             )
         else:
             return Response(requests.delete(new_url, headers=self.header))

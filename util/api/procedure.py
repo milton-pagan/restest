@@ -24,6 +24,13 @@ class Procedure(BaseInstruction):
                             ),
                         )
                     )
+                elif value[2][0] == "dictionary":
+                    self.seq.append(
+                        lambda: self.define(
+                            value[1][1],
+                            self.parse_dictionary(value[2])
+                        )
+                    )
                 else:  # CRUD
                     self.seq.append(
                         lambda: self.define(value[1][1], self.eval_crud(value[2]))
