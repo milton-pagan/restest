@@ -16,14 +16,23 @@ class Procedure(BaseInstruction):
                         lambda: self.define(value[1][1], self.eval_math(value[2]))
                     )
                 elif value[2][0] == "procedure_call":
-                    self.seq.append(
-                        lambda: self.define(
-                            value[1][1],
-                            self.get_proc(value[2][1][1], self.base_url).run(
-                                *value[2][1]
-                            ),
+                    if len(value[2]) == 3:
+                        self.seq.append(
+                            lambda: self.define(
+                                value[1][1],
+                                self.get_proc(value[2][1][1], self.base_url, self.header).run(
+                                    [self.access_object(x) if type(x) == tuple else x for x in value[2][1]]
+                                ),
+                            )
                         )
-                    )
+                    else:
+                        self.seq.append(
+                            lambda: self.define(
+                                value[1][1],
+                                self.get_proc(value[2][1][1], self.base_url, self.header).run()
+                            )
+                        )
+                    
                 elif value[2][0] == "dictionary":
                     self.seq.append(
                         lambda: self.define(
@@ -39,9 +48,16 @@ class Procedure(BaseInstruction):
                 self.seq.append(lambda: self.define(value[1][1], value[2]))
 
         elif value[0] == "procedure_call":
-            self.seq.append(
-                lambda: self.get_proc(value[1][1], self.base_url).run(*value[2][1])
-            )
+            if len(value) == 3:
+                self.seq.append(
+                    lambda: self.get_proc(value[1][1], self.base_url, header=self.header).run(
+                        [self.access_object(x) if type(x) == tuple else x for x in value[2][1]]
+                    )
+                )
+            else:
+                self.seq.append(
+                    lambda: self.get_proc(value[1][1], self.base_url, header=self.header).run()
+                )
 
         elif value[0] == "verify":
             self.seq.append(lambda: self.verify(value[1][1], value[2], value[3]))
@@ -69,7 +85,17 @@ class Procedure(BaseInstruction):
             elif value[0] == "math_expression":
                 return ("return", self.eval_math(value))
             elif value[0] == "procedure_call":
-                return ("return", self.get_proc(value[1][1], self.base_url))
+                if len(value) == 3:
+                    self.seq.append(
+                        lambda: self.get_proc(value[1][1], self.base_url, header=self.header).run(
+                            [self.access_object(x) if type(x) == tuple else x for x in value[2][1]]
+                        )
+                    )
+                else:
+                    self.seq.append(
+                        lambda: self.get_proc(value[1][1], self.base_url, header=self.header).run()
+                    )
+                return ("return", self.get_proc(value[1][1], self.base_url, header=self.header))
             else:
                 return ("return", self.eval_crud(value))
         return ("return", value)

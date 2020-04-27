@@ -1,6 +1,5 @@
 import requests
-from util.api.test import Test
-from util.api.procedure import Procedure
+from util.api import *
 
 
 class TestSequence(object):
@@ -10,12 +9,13 @@ class TestSequence(object):
         self.initial_header = initial_header
 
     def register_proc(self, procedure):
-        self.procedure_registry[procedure.name]
+        self.procedure_registry[procedure.name] = procedure
 
-    def get_proc(self, name="proc", base_url=None):
+    def get_proc(self, name="proc", base_url=None, header=None):
         try:
             proc = self.procedure_registry[name]
             proc.base_url = base_url
+            proc.header = header
             return proc
         except KeyError:
             raise KeyError(f"procedure {name} not defined")

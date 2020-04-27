@@ -3,12 +3,13 @@ import os
 from util.lang_def.restest_yacc import Parser
 from util.api import *
 from util.exceptions.file_type_error import FileTypeError
-
+from core.stdlib import native_functions
 
 class Reader(object):
     def __init__(self):
         self.parser = Parser().build_parser()
         self.test_seq = TestSequence(base_url=None, initial_header=None)
+        map(lambda x:self.test_seq.register_proc(x), native_functions.build_all())
 
     def run(self):
         if not self.parse_tree:

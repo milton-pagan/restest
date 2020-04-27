@@ -126,14 +126,40 @@ class Parser(object):
     def p_procedure(self, p):
         """
         procedure : LP PROC IDENTIFIER LB procedure_parameters RB COLON expression return RP
+                  | LP PROC IDENTIFIER LB RB COLON expression return RP
+                  | LP PROC IDENTIFIER LB procedure_parameters RB COLON return RP 
+                  | LP PROC IDENTIFIER LB RB COLON return RP
+                  | LP PROC IDENTIFIER LB procedure_parameters RB COLON expression RP
+                  | LP PROC IDENTIFIER LB RB COLON expression RP
         """
-        p[0] = (
-            "procedure",
-            ("id", p[3]),
-            ("procedure_parameters", p[5]),
-            ("expression", p[8]),
-            p[9],
-        )
+        if len(p) == 11: # 1
+            p[0] = (
+                "procedure",
+                ("id", p[3]),
+                ("procedure_parameters", p[5]),
+                ("expression", p[8]),
+                p[9],
+            )
+
+        elif len(p) == 10 and type(p[5]) == tuple and p[8][0] == "return": # 3
+            p[0] = ("procedure", ("id", p[3]), ("procedure_parameters", p[5]), p[8])
+
+        elif len(p) == 10 and type(p[5]) == tuple and p[8][0] == "expression": # 5
+            p[0] = ("procedure", ("id", p[3]), ("procedure_parameters", p[5]), ("expression",p[8]))
+
+        elif len(p) == 10: # 2
+            p[0] = (
+                "procedure",
+                ("id", p[3]),
+                ("expression", p[7]),
+                p[8],
+            )
+
+        elif len(p) == 9 and p[7][0] == "expression": # 4
+            p[0] = ("procedure", ("id", p[3]), ("expression", p[7]))
+
+        else: # 6
+            p[0] = ("procedure", ("id", p[3]), p[7])
 
     def p_procedure_parameters(self, p):
         """
@@ -159,8 +185,7 @@ class Parser(object):
 
     def p_return(self, p):
         """
-        return  :  RETURN IDENTIFIER
-                |  RETURN math_expression
+        return  :  RETURN math_expression
                 |  RETURN crud
                 |  RETURN procedure_call
                 |  RETURN STRING
@@ -175,6 +200,8 @@ class Parser(object):
                     |   number
                     |   STRING COMMA parameters
                     |   number COMMA parameters
+                    |   object
+                    |   object COMMA parameters
         """
 
         if len(p) == 2:
@@ -472,6 +499,7 @@ class Parser(object):
         """
         crudbody : object
                  | STRING
+                 | dictionary
         """
         p[0] = ("crudbody", p[1])
 
@@ -488,7 +516,6 @@ class Parser(object):
         else:
             p[0] = ((p[1], p[4]),)
 
-    
     def p_dictionary(self, p):
         """
         dictionary : LC dictionary_object RC
@@ -501,7 +528,7 @@ class Parser(object):
         dictionary_object : STRING COLON dictionary_type
                           | STRING COLON dictionary_type COMMA dictionary_object
         """
-        
+
         if len(p) == 4:
             p[0] = ((p[1], p[3]),)
         else:
@@ -510,9 +537,10 @@ class Parser(object):
     def p_dictionary_type(self, p):
         """ 
         dictionary_type : STRING
+                        | object
                         | number      
                         | dictionary
-        """   
+        """
         p[0] = p[1]
 
     def p_error(self, p):

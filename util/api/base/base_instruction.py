@@ -198,7 +198,10 @@ class BaseInstruction(BaseCrud):
 
         for pair in dictionary_tuple[1]:
             if type(pair[1]) == tuple:
-                value = self.parse_dictionary(pair[1])
+                if pair[1][0] == "dictionary":
+                    value = self.parse_dictionary(pair[1])
+                else:
+                    value = self.access_object(pair[1])
             elif type(pair[1]) == str:
                 value = pair[1].strip('"')
             else:
@@ -207,3 +210,6 @@ class BaseInstruction(BaseCrud):
             dictionary[pair[0].strip('"')] = value
 
         return dictionary
+
+
+            

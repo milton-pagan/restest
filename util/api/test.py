@@ -10,12 +10,12 @@ class Test(BaseInstruction):
         self.url = self.url + str_concat
 
     def before(self, proc_name, *args):
-        self.variables["before_val"] = self.get_proc(proc_name, self.base_url).run(
+        self.variables["before_val"] = self.get_proc(proc_name, self.base_url, header=self.header).run(
             *args
         )
 
     def after(self, proc_name, *args):
-        self.get_proc(proc_name, self.base_url).run(*args)
+        self.get_proc(proc_name, self.base_url, header=self.header).run(*args)
 
     def execute(self, action):
 
@@ -54,7 +54,7 @@ class Test(BaseInstruction):
         if instruction[0] == "verify":
             self.verify(instruction[1][1], instruction[2], instruction[3])
         elif instruction[0] == "procedure_call":
-            self.get_proc(instruction[2][1][1], self.base_url).run(*instruction[2][1])
+            self.get_proc(instruction[2][1][1], self.base_url, header=self.header).run(*instruction[2][1])
         else:  # CRUD
             self.eval_crud(instruction)
 
@@ -64,7 +64,7 @@ class Test(BaseInstruction):
                 self.define(name, self.eval_math(value))
             elif value[0] == "procedure_call":
                 self.define(
-                    name, self.get_proc(value[1][1], self.base_url).run(*value[2][1])
+                    name, self.get_proc(value[1][1], self.base_url, header=self.header).run(*value[2][1])
                 )
             elif value[0] == "object":
                 self.define(name, self.access_object(value))

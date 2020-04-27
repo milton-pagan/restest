@@ -1,6 +1,10 @@
 
-(url "http://www.miltonpagan.com")
+(url "http://localhost:5000")
 (header ["Content-Type":"application/json", "Accepts":"*/*"])
+
+(proc givemeaone[]:
+    return 1
+)
 
 (test on "/disasterStorage/products" test1:
     define product get()
@@ -16,5 +20,7 @@
                                 "water_volume_ml": 1500
                                 }
         }
+    define temp givemeaone()
+    print(temp)
     post(payload)
 )
