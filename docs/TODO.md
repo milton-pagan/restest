@@ -1,7 +1,5 @@
 # TODO
 
-- Add If -> Alpha
-- print in verify
-- test procedures and before and after
-- Fix procedure in reader
-- Fix get_proc calls (add access object)
+- Copy paste crud_url stuff and modify ifs
+
+- En verify, buscar manera para imprimir la expresion original verify que escribio el user al codigo

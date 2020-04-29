@@ -413,6 +413,12 @@ class Parser(object):
 
         p[0] = p[1]
 
+    def p_crud_url(self, p):
+        """
+            crud_url : LT LT STRING
+        """
+        p[0] = p[3]
+
     # ('get') | ('get', ('crudbody', ...) ) | ('get', ('crudbody', ...), (crudargs, ...)) | ('get', ('crudargs', ...) )
     def p_get(self, p):
         """
@@ -420,6 +426,10 @@ class Parser(object):
             | GET LP crudbody RP
             | GET LP crudbody COMMA crudargs RP
             | GET LP crudargs RP
+            | GET LP crud_url RP
+            | GET LP crudbody COMMA crud_url RP
+            | GET LP crudargs COMMA crud_url RP
+            | GET LP crudbody COMMA crudargs COMMA crud_url RP
         """
 
         if len(p) == 4:
@@ -441,6 +451,10 @@ class Parser(object):
             | POST LP crudbody RP
             | POST LP crudbody COMMA crudargs RP
             | POST LP crudargs RP
+            | POST LP crud_url RP
+            | POST LP crudbody COMMA crud_url RP
+            | POST LP crudargs COMMA crud_url RP
+            | POST LP crudbody COMMA crudargs COMMA crud_url RP
         """
         if len(p) == 4:
             p[0] = (p[1],)

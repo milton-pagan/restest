@@ -15,6 +15,10 @@ class BaseInstruction(BaseCrud):
         else:
             self.variables[name] = value
 
+    
+    def output(self, msg, first, operation, second):
+        pprint(msg + "\t" + str(first) + " " + str(operation) + " " + str() + "\n")
+        
     def verify(self, operation, op1, op2):
         if type(op1) == tuple and type(op2) == tuple:
             if op1[0] == "object" and op2[0] == "object":
@@ -27,7 +31,8 @@ class BaseInstruction(BaseCrud):
                 except TypeError:
                     raise TypeError("Invalid types")
 
-                return self.v_calc(first, operation, second)
+                output("OK", first, operation, second) if self.v_calc(first, operation, second) else output("FAILED", first, operation, second)
+                return
 
             elif op1[0] == "math_expression" and op2[0] == "object":
                 comp_op1 = self.eval_math(op1)
@@ -37,8 +42,9 @@ class BaseInstruction(BaseCrud):
                     second = float(comp_op2)
                 except TypeError:
                     raise TypeError("Invalid types")
-
-                return self.v_calc(comp_op1, operation, second)
+                    
+                output("OK", comp_op1, operation, second) if self.v_calc(comp_op1, operation, second) else output("FAILED", comp_op1, operation, second)
+                return
 
             elif op1[0] == "object" and op2[0] == "math_expression":
                 comp_op1 = self.access_object(op1)
@@ -48,12 +54,15 @@ class BaseInstruction(BaseCrud):
                     first = float(comp_op1)
                 except TypeError:
                     raise TypeError("Invalid types")
-
-                return self.v_calc(first, operation, comp_op2)
-
+                
+                output("OK", first, operation, comp_op2) if self.v_calc(first, operation, comp_op2) else output("FAILED", first, operation, comp_op2)
+                return
+                
             comp_op1 = self.eval_math(op1)
             comp_op2 = self.eval_math(op2)
-            return self.v_calc(comp_op1, operation, comp_op2)
+
+            output("OK", comp_op1, operation, comp_op2) if self.v_calc(comp_op1, operation, comp_op2) else output("FAILED", comp_op1, operation, comp_op2)
+            return
 
         if type(op1) == tuple:
             if op1[0] == "object":
@@ -65,7 +74,8 @@ class BaseInstruction(BaseCrud):
                 except TypeError:
                     raise TypeError("Invalid types")
 
-                return self.v_calc(first, operation, second)
+                output("OK", first, operation, second) if self.v_calc(first, operation, second) else output("FAILED", first, operation, second)    
+                return 
 
             if op1[0] == "math_expression":
                 comp_op1 = self.eval_math(op1)
@@ -74,8 +84,9 @@ class BaseInstruction(BaseCrud):
                     second = float(op2)
                 except TypeError:
                     raise TypeError("Invalid types")
-
-                return self.v_calc(comp_op1, operation, second)
+                
+                output("OK", comp_op1, operation, second) if self.v_calc(comp_op1, operation, second) else output("FAILED", comp_op1, operation, second)    
+                return 
 
         if type(op2) == tuple:
             if op2[0] == "object":
@@ -86,8 +97,8 @@ class BaseInstruction(BaseCrud):
                     second = float(comp_op2)
                 except TypeError:
                     raise TypeError("Invalid types")
-
-                return self.v_calc(first, operation, second)
+                output("OK", first, operation, second) if self.v_calc(first, operation, second) else output("FAILED", first, operation, second)
+                return 
 
             if op2[0] == "math_expression":
                 comp_op2 = self.eval_math(op2)
@@ -96,15 +107,17 @@ class BaseInstruction(BaseCrud):
                 except TypeError:
                     raise TypeError("Invalid types")
 
-                return self.v_calc(first, operation, comp_op2)
+                output("OK", first, operation, comp_op2) if self.v_calc(first, operation, comp_op2) else output("FAILED", first, operation, comp_op2)    
+                return 
 
         try:
             first = float(op1)
             second = float(op2)
         except TypeError:
             raise TypeError("Invalid types")
-
-        return self.v_calc(first, operation, second)
+        
+        output("OK", first, operation, second) if self.v_calc(first, operation, second) else output("FAILED", first, operation, second)
+        return
 
     def v_calc(self, op1, operator, op2):
         if operator == "==":

@@ -20,8 +20,13 @@ class Procedure(BaseInstruction):
                         self.seq.append(
                             lambda: self.define(
                                 value[1][1],
-                                self.get_proc(value[2][1][1], self.base_url, self.header).run(
-                                    [self.access_object(x) if type(x) == tuple else x for x in value[2][1]]
+                                self.get_proc(
+                                    value[2][1][1], self.base_url, self.header
+                                ).run(
+                                    [
+                                        self.access_object(x) if type(x) == tuple else x
+                                        for x in value[2][1]
+                                    ]
                                 ),
                             )
                         )
@@ -29,15 +34,16 @@ class Procedure(BaseInstruction):
                         self.seq.append(
                             lambda: self.define(
                                 value[1][1],
-                                self.get_proc(value[2][1][1], self.base_url, self.header).run()
+                                self.get_proc(
+                                    value[2][1][1], self.base_url, self.header
+                                ).run(),
                             )
                         )
-                    
+
                 elif value[2][0] == "dictionary":
                     self.seq.append(
                         lambda: self.define(
-                            value[1][1],
-                            self.parse_dictionary(value[2])
+                            value[1][1], self.parse_dictionary(value[2])
                         )
                     )
                 else:  # CRUD
@@ -50,13 +56,20 @@ class Procedure(BaseInstruction):
         elif value[0] == "procedure_call":
             if len(value) == 3:
                 self.seq.append(
-                    lambda: self.get_proc(value[1][1], self.base_url, header=self.header).run(
-                        [self.access_object(x) if type(x) == tuple else x for x in value[2][1]]
+                    lambda: self.get_proc(
+                        value[1][1], self.base_url, header=self.header
+                    ).run(
+                        [
+                            self.access_object(x) if type(x) == tuple else x
+                            for x in value[2][1]
+                        ]
                     )
                 )
             else:
                 self.seq.append(
-                    lambda: self.get_proc(value[1][1], self.base_url, header=self.header).run()
+                    lambda: self.get_proc(
+                        value[1][1], self.base_url, header=self.header
+                    ).run()
                 )
 
         elif value[0] == "verify":
@@ -86,16 +99,24 @@ class Procedure(BaseInstruction):
                 return ("return", self.eval_math(value))
             elif value[0] == "procedure_call":
                 if len(value) == 3:
-                    self.seq.append(
-                        lambda: self.get_proc(value[1][1], self.base_url, header=self.header).run(
-                            [self.access_object(x) if type(x) == tuple else x for x in value[2][1]]
-                        )
+                    return (
+                        "return",
+                        self.get_proc(
+                            value[1][1], self.base_url, header=self.header
+                        ).run(
+                            [
+                                self.access_object(x) if type(x) == tuple else x
+                                for x in value[2][1]
+                            ]
+                        ),
                     )
                 else:
-                    self.seq.append(
-                        lambda: self.get_proc(value[1][1], self.base_url, header=self.header).run()
+                    return (
+                        "return",
+                        self.get_proc(
+                            value[1][1], self.base_url, header=self.header
+                        ).run(),
                     )
-                return ("return", self.get_proc(value[1][1], self.base_url, header=self.header))
             else:
                 return ("return", self.eval_crud(value))
         return ("return", value)

@@ -18,4 +18,4 @@ def verify_test():
         ),
     )
 
-    return bi.verify(">=", op1, op2)
+    bi.verify(">=", op1, op2)

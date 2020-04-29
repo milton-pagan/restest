@@ -9,7 +9,8 @@ class Reader(object):
     def __init__(self):
         self.parser = Parser().build_parser()
         self.test_seq = TestSequence(base_url=None, initial_header=None)
-        map(lambda x:self.test_seq.register_proc(x), native_functions.build_all())
+        for proc in native_functions.build_all():
+            self.test_seq.register_proc(proc)
 
     def run(self):
         if not self.parse_tree:
@@ -32,17 +33,21 @@ class Reader(object):
         for child in execution_itr:
 
             if child[0] == "procedure":
+                
+                    
                 procedure = Procedure(
-                    name=child[1][1],
-                    get_proc=self.test_seq.get_proc,
-                    base_url=self.test_seq.base_url,
-                    header=self.test_seq.initial_header,
-                    param_list=list(child[2][1]),
+                    child[1][1], # na
+                    self.test_seq.get_proc,# get_proc
+                    self.test_seq.base_url,# base url
+                    self.test_seq.initial_header,# initial header
+                    *(child[2][1] if child[2][0] == "parameters" else tuple())
                 )
 
-                for action in child[3][1]:
-                    procedure.register_action(action)
-                procedure.register_action(child[4])
+                for action in child[2:]:
+                    if "expression" in action:
+                        map(lambda x:procedure.register_action(x), action[1])
+                    elif "return" in action:
+                        procedure.register_action(action)
 
                 self.test_seq.register_proc(procedure)
 

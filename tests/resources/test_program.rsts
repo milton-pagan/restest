@@ -4,7 +4,7 @@
 
 (proc givemeaone[]:
     return 1
-)
+) 
 
 (test on "/disasterStorage/products" test1:
     define product get()
@@ -22,5 +22,10 @@
         }
     define temp givemeaone()
     print(temp)
+    print(payload)
     post(payload)
+)
+
+(test on "/disasterStorage/products/{id}" test2:
+    delete(id<<42)
 )
