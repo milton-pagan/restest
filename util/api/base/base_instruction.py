@@ -7,6 +7,7 @@ class BaseInstruction(BaseCrud):
         super().__init__(base_url, header)
         self.name = name
         self.get_proc = get_proc
+        self.base_url = base_url
         self.variables = {}
 
     def define(self, name, value):
@@ -15,10 +16,13 @@ class BaseInstruction(BaseCrud):
         else:
             self.variables[name] = value
 
-    
     def output(self, msg, first, operation, second):
-        pprint(msg + "\t" + str(first) + " " + str(operation) + " " + str() + "\n")
         
+        if msg == "OK":
+            print("\033[1;32;48m" + msg + "\033[1;32;00m\t" + str(first) + " " + str(operation) + " " + str(second) + "\033[1;32;48m" + "\t in Test -> " + self.name)
+        else:
+            print("\033[1;31;48m" + msg + "\033[1;31;00m\t" + str(first) + " " + str(operation) + " " + str(second) + "\033[1;32;48m" + "\t in Test -> " + self.name)
+
     def verify(self, operation, op1, op2):
         if type(op1) == tuple and type(op2) == tuple:
             if op1[0] == "object" and op2[0] == "object":
@@ -31,7 +35,9 @@ class BaseInstruction(BaseCrud):
                 except TypeError:
                     raise TypeError("Invalid types")
 
-                output("OK", first, operation, second) if self.v_calc(first, operation, second) else output("FAILED", first, operation, second)
+                self.output("OK", first, operation, second) if self.v_calc(
+                    first, operation, second
+                ) else self.output("FAILED", first, operation, second)
                 return
 
             elif op1[0] == "math_expression" and op2[0] == "object":
@@ -42,8 +48,10 @@ class BaseInstruction(BaseCrud):
                     second = float(comp_op2)
                 except TypeError:
                     raise TypeError("Invalid types")
-                    
-                output("OK", comp_op1, operation, second) if self.v_calc(comp_op1, operation, second) else output("FAILED", comp_op1, operation, second)
+
+                self.output("OK", comp_op1, operation, second) if self.v_calc(
+                    comp_op1, operation, second
+                ) else self.output("FAILED", comp_op1, operation, second)
                 return
 
             elif op1[0] == "object" and op2[0] == "math_expression":
@@ -54,14 +62,18 @@ class BaseInstruction(BaseCrud):
                     first = float(comp_op1)
                 except TypeError:
                     raise TypeError("Invalid types")
-                
-                output("OK", first, operation, comp_op2) if self.v_calc(first, operation, comp_op2) else output("FAILED", first, operation, comp_op2)
+
+                self.output("OK", first, operation, comp_op2) if self.v_calc(
+                    first, operation, comp_op2
+                ) else self.output("FAILED", first, operation, comp_op2)
                 return
-                
+
             comp_op1 = self.eval_math(op1)
             comp_op2 = self.eval_math(op2)
 
-            output("OK", comp_op1, operation, comp_op2) if self.v_calc(comp_op1, operation, comp_op2) else output("FAILED", comp_op1, operation, comp_op2)
+            self.output("OK", comp_op1, operation, comp_op2) if self.v_calc(
+                comp_op1, operation, comp_op2
+            ) else self.output("FAILED", comp_op1, operation, comp_op2)
             return
 
         if type(op1) == tuple:
@@ -74,8 +86,10 @@ class BaseInstruction(BaseCrud):
                 except TypeError:
                     raise TypeError("Invalid types")
 
-                output("OK", first, operation, second) if self.v_calc(first, operation, second) else output("FAILED", first, operation, second)    
-                return 
+                self.output("OK", first, operation, second) if self.v_calc(
+                    first, operation, second
+                ) else self.output("FAILED", first, operation, second)
+                return
 
             if op1[0] == "math_expression":
                 comp_op1 = self.eval_math(op1)
@@ -84,9 +98,11 @@ class BaseInstruction(BaseCrud):
                     second = float(op2)
                 except TypeError:
                     raise TypeError("Invalid types")
-                
-                output("OK", comp_op1, operation, second) if self.v_calc(comp_op1, operation, second) else output("FAILED", comp_op1, operation, second)    
-                return 
+
+                self.output("OK", comp_op1, operation, second) if self.v_calc(
+                    comp_op1, operation, second
+                ) else self.output("FAILED", comp_op1, operation, second)
+                return
 
         if type(op2) == tuple:
             if op2[0] == "object":
@@ -97,8 +113,10 @@ class BaseInstruction(BaseCrud):
                     second = float(comp_op2)
                 except TypeError:
                     raise TypeError("Invalid types")
-                output("OK", first, operation, second) if self.v_calc(first, operation, second) else output("FAILED", first, operation, second)
-                return 
+                self.output("OK", first, operation, second) if self.v_calc(
+                    first, operation, second
+                ) else self.output("FAILED", first, operation, second)
+                return
 
             if op2[0] == "math_expression":
                 comp_op2 = self.eval_math(op2)
@@ -107,16 +125,20 @@ class BaseInstruction(BaseCrud):
                 except TypeError:
                     raise TypeError("Invalid types")
 
-                output("OK", first, operation, comp_op2) if self.v_calc(first, operation, comp_op2) else output("FAILED", first, operation, comp_op2)    
-                return 
+                self.output("OK", first, operation, comp_op2) if self.v_calc(
+                    first, operation, comp_op2
+                ) else self.output("FAILED", first, operation, comp_op2)
+                return
 
         try:
             first = float(op1)
             second = float(op2)
         except TypeError:
             raise TypeError("Invalid types")
-        
-        output("OK", first, operation, second) if self.v_calc(first, operation, second) else output("FAILED", first, operation, second)
+
+        self.output("OK", first, operation, second) if self.v_calc(
+            first, operation, second
+        ) else self.output("FAILED", first, operation, second)
         return
 
     def v_calc(self, op1, operator, op2):
@@ -175,17 +197,38 @@ class BaseInstruction(BaseCrud):
             return temp[value[1][1]]
 
     def eval_crud(self, value: tuple):
-        
+
         if len(value) == 0:
             raise ValueError("Value cannot be empty")
 
-        if len(value) == 1:
+        elif len(value) == 1:
             return self.crud[value[0]](body=None).to_dict()
 
-        if len(value) == 3:
+        # crudbody crudargs
+        elif len(value) == 3 and type(value[1]) == tuple and type(value[2]) == tuple:
             param_dict = {x[0]: x[1] for x in value[2][1]}
-            return self.crud[value[0]](body=self._helper_crud_body(value[1]), **param_dict).to_dict()
+            return self.crud[value[0]](
+                body=self._helper_crud_body(value[1]), **param_dict
+            ).to_dict()
 
+        # crudbody crudurl
+        elif len(value) == 3 and value[1][0] == "crudbody":
+            return self.crud[value[0]](
+                body=self._helper_crud_body(value[1]),
+                url=value[2]
+            ).to_dict()
+            
+        # crudargs crudurl
+        elif len(value) == 3: 
+            param_dict = {x[0]:x[1] for x in value[1][1]}
+            return self.crud[value[0]](
+                url=value[2],
+                **param_dict
+            ).to_dict() 
+    
+        elif len(value) == 2 and type(value[1]) == str:
+            return self.crud[value[0]](body=None, url=value[1]).to_dict()
+            
         elif len(value) == 2 and value[1][0] == "crudbody":
             return self.crud[value[0]](body=self._helper_crud_body(value[1])).to_dict()
 
@@ -193,8 +236,6 @@ class BaseInstruction(BaseCrud):
             param_dict = {x[0]: x[1] for x in value[1][1]}
             return self.crud[value[0]](body=None, **param_dict).to_dict()
 
-        else:
-            return self.crud[value[0]](body=self.access_object(value[1][1])).to_dict()
 
     def _helper_crud_body(self, value):
         if type(value[1]) == tuple:
@@ -223,6 +264,3 @@ class BaseInstruction(BaseCrud):
             dictionary[pair[0].strip('"')] = value
 
         return dictionary
-
-
-            

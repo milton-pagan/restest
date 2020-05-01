@@ -7,7 +7,7 @@ class Test(BaseInstruction):
         super().__init__(name=name, base_url=base_url, get_proc=get_proc, header=header)
 
     def on(self, str_concat):
-        self.url = self.url + str_concat
+        self.base_url = self.base_url + str_concat
 
     def before(self, proc_name, *args):
         self.variables["before_val"] = self.get_proc(

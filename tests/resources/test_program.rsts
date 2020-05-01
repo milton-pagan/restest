@@ -1,13 +1,19 @@
 
-(url "http://localhost:5000")
+(url "http://www.miltonpagan.com")
 (header ["Content-Type":"application/json", "Accepts":"*/*"])
 
 (proc givemeaone[]:
     return 1
 ) 
 
+(proc cleanup[n_id]:
+    delete(id<<n_id, <<"http://www.miltonpagan.com/disasterStorage/products/{id}")
+)
+
 (test on "/disasterStorage/products" test1:
+    
     define product get()
+    
     define payload {"product_name": "water jug",
         "product_description": "jug",
         "product_price": 1.0,
@@ -20,12 +26,11 @@
                                 "water_volume_ml": 1500
                                 }
         }
-    define temp givemeaone()
-    print(temp)
-    print(payload)
-    post(payload)
-)
 
-(test on "/disasterStorage/products/{id}" test2:
-    delete(id<<42)
-)
+    print(payload)
+
+    post(payload)
+
+    define t_id 39
+
+) after cleanup(t_id)

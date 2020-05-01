@@ -1,6 +1,5 @@
 import ply.yacc as yacc
-from util.lang_def.restest_lex import Lexer
-
+from util.lang_def import Lexer
 
 class Parser(object):
 
@@ -403,37 +402,50 @@ class Parser(object):
 
         p[0] = p[1]
 
-    def p_crud(self, p):
-        """
-        crud : get
-             | post
-             | put
-             | delete
-        """
-
-        p[0] = p[1]
-
     def p_crud_url(self, p):
         """
-            crud_url : LT LT STRING
+        crud_url : LT LT STRING
         """
         p[0] = p[3]
 
-    # ('get') | ('get', ('crudbody', ...) ) | ('get', ('crudbody', ...), (crudargs, ...)) | ('get', ('crudargs', ...) )
-    def p_get(self, p):
+    def p_crud_operation(self, p):
         """
-        get : GET LP RP
-            | GET LP crudbody RP
-            | GET LP crudbody COMMA crudargs RP
-            | GET LP crudargs RP
-            | GET LP crud_url RP
-            | GET LP crudbody COMMA crud_url RP
-            | GET LP crudargs COMMA crud_url RP
-            | GET LP crudbody COMMA crudargs COMMA crud_url RP
+        crud_operation : GET
+                       | POST
+                       | PUT
+                       | DELETE
         """
 
-        if len(p) == 4:
+
+        p[0] = p[1]
+
+    # ('get') | ('get', ('crudbody', ...) ) | ('get', ('crudbody', ...), (crudargs, ...)) | ('get', ('crudargs', ...) )
+    def p_crud(self, p):
+        """
+        crud : crud_operation LP RP
+             | crud_operation LP crudbody RP
+             | crud_operation LP crudbody COMMA crudargs RP
+             | crud_operation LP crudargs RP
+             | crud_operation LP crud_url RP 
+             | crud_operation LP crudbody COMMA crud_url RP 
+             | crud_operation LP crudargs COMMA crud_url RP 
+             | crud_operation LP crudbody COMMA crudargs COMMA crud_url RP 
+        """
+
+        if len(p) == 4: # 1
             p[0] = (p[1],)
+    
+        elif len(p) == 5 and type(p[3]) == str: # 5
+            p[0] = (p[1], p[3])
+
+        elif len(p) == 7 and type(p[3]) == tuple and p[3][0] == "crudbody" and type(p[5]) == str: # 6
+            p[0] = (p[1], p[3], p[5])
+
+        elif len(p) == 7 and type(p[3]) == tuple and type(p[5]) == str: # 7
+            p[0] = (p[1], ("crudargs", p[3]), p[5])
+
+        elif len(p) == 9: # 8
+            p[0] = (p[1], p[3], ("crudargs", p[5]), p[7])
 
         elif len(p) == 5 and p[3][0] == "crudbody":
             p[0] = (p[1], p[3])
@@ -475,6 +487,10 @@ class Parser(object):
             | PUT LP crudbody RP
             | PUT LP crudbody COMMA crudargs RP
             | PUT LP crudargs RP
+            | PUT LP crud_url RP
+            | PUT LP crudbody COMMA crud_url RP
+            | PUT LP crudargs COMMA crud_url RP
+            | PUT LP crudbody COMMA crudargs COMMA crud_url RP
         """
         if len(p) == 4:
             p[0] = (p[1],)
@@ -495,6 +511,10 @@ class Parser(object):
                 | DELETE LP crudbody RP
                 | DELETE LP crudbody COMMA crudargs RP
                 | DELETE LP crudargs RP
+                | DELETE LP crud_url RP
+                | DELETE LP crudbody COMMA crud_url RP
+                | DELETE LP crudargs COMMA crud_url RP
+                | DELETE LP crudbody COMMA crudargs COMMA crud_url RP
         """
         if len(p) == 4:
             p[0] = (p[1],)
