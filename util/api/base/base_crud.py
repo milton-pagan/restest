@@ -5,7 +5,7 @@ from util.api.response import Response
 class BaseCrud(object):
     def __init__(self, base_url, header):
         super().__init__()
-        self.url = base_url
+        self.base_url = base_url
         self.header = header
         self.crud = {
             "get": self.get,
@@ -15,7 +15,7 @@ class BaseCrud(object):
         }
 
     def _construct_url(self, url=None, **kwargs):
-        new_url = self.url if not url else url
+        new_url = self.base_url if not url else url
         for key in kwargs.keys():
             new_url = new_url.replace("{" + key + "}", f"{kwargs[key]}")
         return new_url

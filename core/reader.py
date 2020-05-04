@@ -40,7 +40,7 @@ class Reader(object):
                     self.test_seq.get_proc,# get_proc
                     self.test_seq.base_url,# base url
                     self.test_seq.initial_header,# initial header
-                    *(child[2][1] if child[2][0] == "parameters" else tuple())
+                    child[2][1] if child[2][0] == "parameters" else tuple()
                 )
 
                 for action in child[2:]:
@@ -53,7 +53,7 @@ class Reader(object):
 
             elif child[0] == "test":
                 test = Test(
-                    name=None,
+                    name=child[1][1],
                     base_url=self.test_seq.base_url,
                     get_proc=self.test_seq.get_proc,
                     header=self.test_seq.initial_header

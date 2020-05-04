@@ -7,13 +7,13 @@ def build_all():
 
 # name, get_proc, base_url, header, *param_list
 def build_print():
-    print_proc = Procedure("print", None, None, None, "askdhlhqpurhfp3h4p9234")
+    print_proc = Procedure("print", None, None, None, ("askdhlhqpurhfp3h4p9234", ))
     print_proc.seq.append(lambda: pprint(print_proc.variables[print_proc.param_list[0]]))
     return print_proc
 
 
 def build_length():
-    length_proc = Procedure("len", None, None, None, "askdhlhqpurh")
+    length_proc = Procedure("len", None, None, None, ("askdhlhqpurh", ))
     length_proc.seq.append(
         lambda: length_proc.ret(len(length_proc.variables[length_proc.param_list[0]]))
     )

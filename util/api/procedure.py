@@ -3,7 +3,7 @@ from util.api.base.base_instruction import BaseInstruction
 
 
 class Procedure(BaseInstruction):
-    def __init__(self, name, get_proc, base_url, header, *param_list):
+    def __init__(self, name, get_proc, base_url, header, param_list):
         super().__init__(name=name, get_proc=get_proc, base_url=base_url, header=header)
         self.seq = []
         self.param_list = param_list
@@ -92,7 +92,7 @@ class Procedure(BaseInstruction):
                 return temp[1]
 
     def ret(self, value):
-        if type(value) == "tuple":
+        if type(value) == tuple:
             if value[0] == "object":
                 return ("return", self.access_object(value))
             elif value[0] == "math_expression":

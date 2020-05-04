@@ -29,8 +29,8 @@
 
     print(payload)
 
-    post(payload)
+    define payload2 post(payload)
 
-    define t_id 39
+    print(payload2)
 
-) after cleanup(t_id)
+) 
