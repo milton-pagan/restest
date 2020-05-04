@@ -24,10 +24,7 @@ class BaseInstruction(BaseCrud):
             print("\033[1;31;48m" + msg + "\033[1;32;00m\t" + str(first) + " " + str(operation) + " " + str(second) + "\033[1;34;48m" + "\t in Test -> " + self.name)
 
     def verify(self, operation, op1, op2):
-        print(op1)
-        print(op2)
-        print(operation)
-        print(self.variables)
+        
         if type(op1) == tuple and type(op2) == tuple:
             if op1[0] == "object" and op2[0] == "object":
                 comp_op1 = self.access_object(op1)
