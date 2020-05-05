@@ -207,7 +207,11 @@ class BaseInstruction(BaseCrud):
 
         # crudbody crudargs
         elif len(value) == 3 and type(value[1]) == tuple and type(value[2]) == tuple:
-            param_dict = {x[0]: x[1] for x in value[2][1]}
+            param_dict = {x[0]: 
+                self.access_object(x[1]) if type(x[1]) == tuple else
+                x[1]   
+                for x in value[2][1]
+                }
             return self.crud[value[0]](
                 body=self._helper_crud_body(value[1]), **param_dict
             ).to_dict()
@@ -216,25 +220,32 @@ class BaseInstruction(BaseCrud):
         elif len(value) == 3 and value[1][0] == "crudbody":
             return self.crud[value[0]](
                 body=self._helper_crud_body(value[1]),
-                url=value[2]
+                url=value[2].strip('"')
             ).to_dict()
             
         # crudargs crudurl
         elif len(value) == 3: 
-            param_dict = {x[0]:x[1] for x in value[1][1]}
+            param_dict = {x[0]: 
+                self.access_object(x[1]) if type(x[1]) == tuple else
+                x[1] for x in value[1][1]
+            }
             return self.crud[value[0]](
-                url=value[2],
+                url=value[2].strip('"'),
                 **param_dict
             ).to_dict() 
     
-        elif len(value) == 2 and type(value[1]) == str:
-            return self.crud[value[0]](body=None, url=value[1]).to_dict()
+        elif len(value) == 2 and type(value[1]) == str: # crudurl
+            return self.crud[value[0]](body=None, url=value[1].strip('"')).to_dict()
             
         elif len(value) == 2 and value[1][0] == "crudbody":
             return self.crud[value[0]](body=self._helper_crud_body(value[1])).to_dict()
 
         elif len(value) == 2 and value[1][0] == "crudargs":
-            param_dict = {x[0]: x[1] for x in value[1][1]}
+            param_dict = {x[0]: 
+                self.access_object(x[1]) if type(x[1]) == tuple
+                else x[1]  
+                for x in value[1][1]
+            }
             return self.crud[value[0]](body=None, **param_dict).to_dict()
 
 

@@ -2,19 +2,24 @@ import sys
 from core.reader import Reader
 from tests.verify_test import verify_test
 
-if __name__ == "__main__":
 
+def main():
     reader = Reader()
 
-    # if "-tm" in sys.argv:
-        # if len(sys.argv) != 2:
-        #     print("Invalid arguments!")
-        #     exit(-1)
+    if len(sys.argv) != 2:
+        print("Invalid arguments!")
+        exit(-1)
 
-    path = "tests/resources/test_program_carapi.rsts"
+    path = sys.argv[1] 
 
-    reader.read_file(path)
+    try:
+        reader.read_file(path)
+    except SyntaxError:
+        exit(-1)
+
     reader.run()
 
-    if "-tv" in sys.argv:
-        verify_test()
+
+if __name__ == "__main__":
+    main()
+   

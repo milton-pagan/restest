@@ -40,12 +40,13 @@ class Reader(object):
                     self.test_seq.get_proc,# get_proc
                     self.test_seq.base_url,# base url
                     self.test_seq.initial_header,# initial header
-                    child[2][1] if child[2][0] == "parameters" else tuple()
+                    child[2][1] if child[2][0] == "procedure_parameters" else tuple()
                 )
 
                 for action in child[2:]:
                     if "expression" in action:
-                        map(lambda x:procedure.register_action(x), action[1])
+                        for x in action[1]:
+                            procedure.register_action(x)
                     elif "return" in action:
                         procedure.register_action(action)
 
@@ -65,12 +66,13 @@ class Reader(object):
         if not path.endswith(".rsts"):
             try:
                 raise FileTypeError(f"Invalid file type: {os.path.splitext(path)}")
-                exit(-1)
             except IndexError:
                 raise FileTypeError(f"Invalid file type: No file type")
-                exit(-1)
         with open(path, "r") as file:
             self.parse_tree = self.parser.parse(file.read())
+            if self.parse_tree == None:
+                exit(1)
+
 
     def parse_header(self, header_params):
         header = {}

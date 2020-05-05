@@ -23,9 +23,9 @@ class Procedure(BaseInstruction):
                                 self.get_proc(
                                     value[2][1][1], self.base_url, self.header
                                 ).run(
-                                    [
+                                    *[
                                         self.access_object(x) if type(x) == tuple else x
-                                        for x in value[2][1]
+                                        for x in value[2][2][1]
                                     ]
                                 ),
                             )

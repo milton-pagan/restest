@@ -36,4 +36,4 @@ before build_up() (test on "/all" test_after:
     define all_cars get()
     define length len(all_cars.data)
     verify  length == 1 
-) after clean_up(before_val.id)
+) after clean_up(before_val.data.id)

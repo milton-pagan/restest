@@ -1,6 +1,6 @@
 import ply.yacc as yacc
 from util.lang_def import Lexer
-
+from util.exceptions.syntax_error import SyntaxError
 class Parser(object):
 
     tokens = Lexer.tokens
@@ -143,7 +143,7 @@ class Parser(object):
         elif len(p) == 10 and type(p[5]) == tuple and p[8][0] == "return": # 3
             p[0] = ("procedure", ("id", p[3]), ("procedure_parameters", p[5]), p[8])
 
-        elif len(p) == 10 and type(p[5]) == tuple and p[8][0] == "expression": # 5
+        elif len(p) == 10 and type(p[5]) == tuple and type(p[8]) == tuple and p[8][0] != "return": # 5
             p[0] = ("procedure", ("id", p[3]), ("procedure_parameters", p[5]), ("expression",p[8]))
 
         elif len(p) == 10: # 2
@@ -154,11 +154,11 @@ class Parser(object):
                 p[8],
             )
 
-        elif len(p) == 9 and p[7][0] == "expression": # 4
-            p[0] = ("procedure", ("id", p[3]), ("expression", p[7]))
+        elif len(p) == 9 and p[7][0] == "return": # 4
+            p[0] = ("procedure", ("id", p[3]), p[7])
 
         else: # 6
-            p[0] = ("procedure", ("id", p[3]), p[7])
+            p[0] = ("procedure", ("id", p[3]), ("expression",p[7]) )
 
     def p_procedure_parameters(self, p):
         """
@@ -506,8 +506,7 @@ class Parser(object):
         p[0] = p[1]
 
     def p_error(self, p):
-        print("Syntax error at token ", p, " line:", p.lexer.lineno)
-
+        raise SyntaxError(f"Invalid syntax at line {p.lexer.lineno}: {p.value}")
     def build_parser(self):
         parser = yacc.yacc(tabmodule="restest_parser", module=self)
         return parser
