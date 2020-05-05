@@ -2,13 +2,15 @@
 
 ## Authors : Milton Pagan, Dionel Martinez, Kenneth J. Rosario, Javier Cuebas
 
-* To run tests write the following command from the root directory of project:
+* Install package:
 ```
-python3 -m unittest discover
-```
-* or:
-```
-python -m unittest discover
+git clone https://github.com/milton-pagan/restest.git
+cd ./restest
+pip3 install -e .
 ```
 
+* Usage:
+```
+restest [script path]
+```
 
