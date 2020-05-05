@@ -1,0 +1,39 @@
+(url "http://localhost:5000/car")
+
+
+(proc build_car[year, make, model, manufacturer]:
+    define toReturn {
+        "make":make,
+        "model":model,
+        "manufacturer":manufacturer,
+        "year":year
+    }
+
+    return toReturn
+)
+
+(proc build_up[]:
+    define car build_car(
+        "2017",
+        "Corolla",
+        "LE",
+        "Toyota"
+    )
+    return post(car, <<"http://localhost:5000/car/add")
+)
+
+(proc clean_up[t_id]:
+    define res delete(id<<t_id, <<"http://localhost:5000/car/delete/{id}" )
+    print(res)
+)
+
+(test on "/all" test_all:
+    define allCars get()
+    print(allCars)   
+)
+
+before build_up() (test on "/all" test_after:
+    define all_cars get()
+    define length len(all_cars.data)
+    verify  length == 1 
+) after clean_up(before_val.data.id)

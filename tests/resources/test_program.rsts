@@ -1,0 +1,36 @@
+
+(url "http://www.miltonpagan.com")
+(header ["Content-Type":"application/json", "Accepts":"*/*"])
+
+(proc givemeaone[]:
+    return 1
+) 
+
+(proc cleanup[n_id]:
+    delete(id<<n_id, <<"http://www.miltonpagan.com/disasterStorage/products/{id}")
+)
+
+(test on "/disasterStorage/products" test1:
+    
+    define product get()
+    
+    define payload {"product_name": "water jug",
+        "product_description": "jug",
+        "product_price": 1.0,
+        "product_quantity": 100,
+        "latitude": 50,
+        "longitude": 100.5,
+        "category": "water", 
+        "category_attributes": {
+                                "water_exp_date": "2020-05-20", 
+                                "water_volume_ml": 1500
+                                }
+        }
+
+    print(payload)
+
+    define payload2 post(payload)
+
+    print(payload2)
+
+) 

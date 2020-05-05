@@ -1,7 +1,7 @@
 # RESTest Language Specification
 
 ```
-    {test_sequence} = {url} SEPARATOR {header} SEPARATOR {execution}
+      {test_sequence} = {url} SEPARATOR {header} SEPARATOR {execution}
     | {url} SEPARATOR {header} SEPARATOR {execution}{test_sequence}
     | {url} SEPARATOR {execution}
     | {url} SEPARATOR {execution}{test_sequence}
@@ -34,7 +34,7 @@
 
     /* PROCEDURE */
 
-    {procedure} = LP PROC IDENTIFIER LB {procedure_parameters} RB COLON SEPARATOR {expression} RP
+    {procedure} = LP PROC IDENTIFIER LB {procedure_parameters} RB COLON SEPARATOR {expression} {return} RP
 
     {procedure_parameters} = IDENTIFIER
     | IDENTIFIER COMMA {procedure_parameters}
@@ -46,6 +46,14 @@
     | NUMBER
     | STRING COMMA {parameters}
     | NUMBER COMMA {parameters}
+
+    {return} = RETURN IDENTIFIER
+    | RETURN {math_expression}
+    | RETURN {crud}
+    | RETURN {procedure_call}
+    | RETURN {object}
+    | RETURN NUMBER
+    | RETURN STRING
 
     /* EXPRESSION */
     {expression} = {line}
@@ -63,6 +71,7 @@
     | DEFINE IDENTIFIER IDENTIFIER
     | DEFINE IDENTIFIER {procedure_call}
     | DEFINE IDENTIFIER {crud}
+    | DEFINE IDENTIFIER {math_expression}
 
     {verify} = VERIFY {object} EQ {object}
     | VERIFY {math_expression} EQ {object}
@@ -142,23 +151,5 @@
     | IDENTIFIER LT LT {object}
     | IDENTIFIER LT LT STRING
     | IDENTIFIER LT LT NUMBER
-
-```
-
-```
-(url "" )
-(header ["DIMELO":"DIMELO"])
-
-(Test on "/dimelo":
-define crazy_num 1
-verify eq crazy_num 1
-)
-
-Parse Tree = [{"url":""}, {"header":{"DIMELO":"DIMELO"}}, {"test": {
-"url-add":"/dimelo",
-"define": {"crazy_num":1},
-"verify": {"op":"eq",
-}
-}} ]
 
 ```

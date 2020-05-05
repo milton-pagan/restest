@@ -25,6 +25,7 @@ class Lexer:
         "and": "AND",
         "or": "OR",
         "not": "NOT",
+        "return": "RETURN",
     }
 
     operators = {
@@ -46,13 +47,16 @@ class Lexer:
         [
             "IDENTIFIER",
             "OPERATOR",
-            "NUMBER",
+            "INTEGER",
+            "FLOAT",
             "STRING",
             "SEPARATOR",
             "LP",
             "RP",
             "LB",
             "RB",
+            "LC",
+            "RC",
             "COLON",
             "DOT",
             "COMMA",
@@ -80,6 +84,10 @@ class Lexer:
 
     t_RB = r"\]"
 
+    t_LC = r"{"
+
+    t_RC = r"}"
+
     t_COLON = r":"
 
     t_DOT = r"\."
@@ -93,12 +101,15 @@ class Lexer:
         t.type = self.reserved.get(t.value, "IDENTIFIER")
         return t
 
-    def t_NUMBER(self, t):
-        r"(\+|-)?(\d*\.\d+|\d+)"
-        if "." in t.value:
-            t.value = float(t.value)
-        else:
-            t.value = int(t.value)
+    def t_FLOAT(self, t):
+        r"(\+|-)?(\d+\.\d+)"
+
+        t.value = float(t.value)
+        return t
+
+    def t_INTEGER(self, t):
+        r"(\+|-)?(\d+)"
+        t.value = int(t.value)
         return t
 
     @TOKEN(operator)

@@ -176,3 +176,5 @@ pl_project.code-workspace
 .vscode/
 util/lang_def/restest_parser.py
 util/lang_def/parser.out
+Pipfile.lock
+Pipfile
