@@ -12,7 +12,7 @@
 )
 
 before build_car("2018") (test on "/add" test1:
-    define res post()
+    define res post(before_val)
     verify res.status != 200
 )
 
@@ -49,6 +49,5 @@ before build_car("2018") (test on "/add" test1:
 
     define alls get(<<"http://localhost:5000/car/all")
 
-    
 
 )

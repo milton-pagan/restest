@@ -18,10 +18,10 @@ class BaseInstruction(BaseCrud):
 
     def output(self, msg, first, operation, second):
         
-        if msg == "OK":
-            print("\033[1;32;48m" + msg + "\033[1;32;00m\t" + str(first) + " " + str(operation) + " " + str(second) + "\033[1;34;48m" + "\t in Test -> " + self.name)
+        if msg == "SUCCESS":
+            print(f"\033[1;32;48m {msg} \033[1;32;00m\t {str(first)} {str(operation)} {str(second)} \033[1;34;48m \t in Test -> {self.name}")
         else:
-            print("\033[1;31;48m" + msg + "\033[1;32;00m\t" + str(first) + " " + str(operation) + " " + str(second) + "\033[1;34;48m" + "\t in Test -> " + self.name)
+            print(f"\033[1;31;48m {msg} \033[1;32;00m\t {str(first)} {str(operation)} {str(second)} \033[1;34;48m \t in Test -> {self.name}")
 
     def verify(self, operation, op1, op2):
         
@@ -36,7 +36,7 @@ class BaseInstruction(BaseCrud):
                 except TypeError:
                     raise TypeError("Invalid types")
 
-                self.output("OK", first, operation, second) if self.v_calc(
+                self.output("SUCCESS", first, operation, second) if self.v_calc(
                     first, operation, second
                 ) else self.output("FAILED", first, operation, second)
                 return
@@ -50,7 +50,7 @@ class BaseInstruction(BaseCrud):
                 except TypeError:
                     raise TypeError("Invalid types")
 
-                self.output("OK", comp_op1, operation, second) if self.v_calc(
+                self.output("SUCCESS", comp_op1, operation, second) if self.v_calc(
                     comp_op1, operation, second
                 ) else self.output("FAILED", comp_op1, operation, second)
                 return
@@ -64,7 +64,7 @@ class BaseInstruction(BaseCrud):
                 except TypeError:
                     raise TypeError("Invalid types")
 
-                self.output("OK", first, operation, comp_op2) if self.v_calc(
+                self.output("SUCCESS", first, operation, comp_op2) if self.v_calc(
                     first, operation, comp_op2
                 ) else self.output("FAILED", first, operation, comp_op2)
                 return
@@ -72,7 +72,7 @@ class BaseInstruction(BaseCrud):
             comp_op1 = self.eval_math(op1)
             comp_op2 = self.eval_math(op2)
 
-            self.output("OK", comp_op1, operation, comp_op2) if self.v_calc(
+            self.output("SUCCESS", comp_op1, operation, comp_op2) if self.v_calc(
                 comp_op1, operation, comp_op2
             ) else self.output("FAILED", comp_op1, operation, comp_op2)
             return
@@ -87,7 +87,7 @@ class BaseInstruction(BaseCrud):
                 except TypeError:
                     raise TypeError("Invalid types")
 
-                self.output("OK", first, operation, second) if self.v_calc(
+                self.output("SUCCESS", first, operation, second) if self.v_calc(
                     first, operation, second
                 ) else self.output("FAILED", first, operation, second)
                 return
@@ -100,7 +100,7 @@ class BaseInstruction(BaseCrud):
                 except TypeError:
                     raise TypeError("Invalid types")
 
-                self.output("OK", comp_op1, operation, second) if self.v_calc(
+                self.output("SUCCESS", comp_op1, operation, second) if self.v_calc(
                     comp_op1, operation, second
                 ) else self.output("FAILED", comp_op1, operation, second)
                 return
@@ -114,7 +114,7 @@ class BaseInstruction(BaseCrud):
                     second = float(comp_op2)
                 except TypeError:
                     raise TypeError("Invalid types")
-                self.output("OK", first, operation, second) if self.v_calc(
+                self.output("SUCCESS", first, operation, second) if self.v_calc(
                     first, operation, second
                 ) else self.output("FAILED", first, operation, second)
                 return
@@ -126,7 +126,7 @@ class BaseInstruction(BaseCrud):
                 except TypeError:
                     raise TypeError("Invalid types")
 
-                self.output("OK", first, operation, comp_op2) if self.v_calc(
+                self.output("SUCCESS", first, operation, comp_op2) if self.v_calc(
                     first, operation, comp_op2
                 ) else self.output("FAILED", first, operation, comp_op2)
                 return
@@ -137,7 +137,7 @@ class BaseInstruction(BaseCrud):
         except TypeError:
             raise TypeError("Invalid types")
 
-        self.output("OK", first, operation, second) if self.v_calc(
+        self.output("SUCCESS", first, operation, second) if self.v_calc(
             first, operation, second
         ) else self.output("FAILED", first, operation, second)
         return
