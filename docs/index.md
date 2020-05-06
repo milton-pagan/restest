@@ -4,7 +4,7 @@
 
 ## Introduction
 
-    RESTful (Representational State Transfer) APIs are interfaces that provide
+RESTful (Representational State Transfer) APIs are interfaces that provide
 interoperability between computers over the Internet. It is widely used in
 a variety of applications that range from simple webpages to more complex
 applications like social media networks. Following a client-server model,
@@ -26,7 +26,7 @@ the language and allow it to do more with fewer lines of code.
 
 ## Motivations
 
-    The need for a simple way to test REST APIs came to be as most of our team
+The need for a simple way to test REST APIs came to be as most of our team
 members were building APIs in that same semester, ICOM4036/CIIC4030 and a
 Motivations tool to automate testing the RESTest was born.
 
