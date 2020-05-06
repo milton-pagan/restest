@@ -1,10 +1,10 @@
 # RESTest
 
-Authors: Kenneth Rosario, Milton Pagan, Dionel Martinez, Javier Cuebas
+**Authors**: Kenneth Rosario, Milton Pagan, Dionel Martinez, Javier Cuebas
 
 ## Introduction
 
-RESTful (Representational State Transfer) APIs are interfaces that provide
+    RESTful (Representational State Transfer) APIs are interfaces that provide
 interoperability between computers over the Internet. It is widely used in
 a variety of applications that range from simple webpages to more complex
 applications like social media networks. Following a client-server model,
@@ -26,27 +26,27 @@ the language and allow it to do more with fewer lines of code.
 
 ## Motivations
 
-The need for a simple way to test REST APIs came to be as most of our team
+    The need for a simple way to test REST APIs came to be as most of our team
 members were building APIs in that same semester, ICOM4036/CIIC4030 and a
 Motivations tool to automate testing the RESTest was born.
 
 ## Language Features
 
-- Test case definitions
+- **Test case definitions**
   - Allow users to create tests with specified before and after procedures
-- Url definitions
+- **Url definitions**
   - Implicit global url definitions
-- Header definitions
+- **Header definitions**
   - Implicit global header definitions
-- Assertions
+- **Assertions:**
   - Allows verification of conditions
-- Automatic setup of connection to API
+- **Automatic setup of connection to API**
   - Connection and data fetching under the hood
-- Automatic test execution
+- **Automatic test execution**
   - Automatically executes a set of test cases
-- Formatted prints
+- **Formatted prints**
   - Native pretty print
-- Test Summaries
+- **Test Summaries**
   - Results after a test execution
 
 ## Code example
