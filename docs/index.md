@@ -1,17 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RESTest</title>
-  </head>
-  <body>
-    <h1>RESTest</h1>
-    <span
-      >Authors: Kenneth Rosario, Milton Pagan, Dionel Martinez, Javier Cuebas
-    </span>
-    <h2>Introductiion</h2>
-    <p>
+# RESTest
+
+      Authors: Kenneth Rosario, Milton Pagan, Dionel Martinez, Javier Cuebas
+
+## Introduction
+
       RESTful (Representational State Transfer) APIs are interfaces that provide
       interoperability between computers over the Internet. It is widely used in
       a variety of applications that range from simple webpages to more complex
@@ -31,17 +23,11 @@
       as opposed to figuring out how to make them. Many of its features follow
       the functional programming model which helps reinforce the simplicity of
       the language and allow it to do more with fewer lines of code.
-    </p>
-    <h2>Motivations</h2>
-    <p>
+
+## Motivations
+
       The need for a simple way to test REST APIs came to be as most of our team
       members were building APIs in that same semester, ICOM4036/CIIC4030 and a
       Motivations tool to automate testing the RESTest was born.
-    </p>
-    <h2>Language Features</h2>
-    <ul>
-      <li></li>
-    </ul>
 
-  </body>
-</html>
+## Language Features
